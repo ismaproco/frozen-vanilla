@@ -25,7 +25,7 @@ function connectDB(response)
     if(err) return console.error(err);
         console.log(result.rows);
 	
-	response.send(result.rows[0]);
+	response.send(result.rows);
    });
   });
 }
