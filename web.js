@@ -6,7 +6,7 @@ app.use(express.logger());
 
 app.get('/', function(request, response) {
  // response.send('Probando!!!');
-	var item = connectDB();
+	var item = connectDB(response);
 	var resp = typeof(item);
 	console.log(resp);
 	
@@ -18,7 +18,7 @@ app.listen(port, function() {
 });
 
 
-function connectDB()
+function connectDB(response)
 {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('SELECT * FROM requests', function(err, result) {
