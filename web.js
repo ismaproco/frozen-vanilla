@@ -21,7 +21,7 @@ function connectDB()
    client.query('SELECT * FROM requests', function(err, result) {
     done();
     if(err) return console.error(err);
-    //console.log(result.rows);
+        console.log(result.rows);
 	return result.rows;
    });
   });
