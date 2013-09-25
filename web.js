@@ -7,8 +7,7 @@ app.use(express.logger());
 app.get('/', function(request, response) {
  // response.send('Probando!!!');
 	var item = connectDB(response);
-	var resp = typeof(item);
-	console.log(resp);
+	console.log(item);
 	
 });
 
