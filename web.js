@@ -25,7 +25,8 @@ function connectDB()
     done();
     if(err) return console.error(err);
         console.log(result.rows);
-	response.send(result.rows);
+	response.writeHead(200,{'Content-Tyoe':'application/json'});
+	response.send(result.rows[0]);
    });
   });
 }
