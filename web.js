@@ -6,7 +6,10 @@ app.use(express.logger());
 
 app.get('/', function(request, response) {
  // response.send('Probando!!!');
-	response.send(connectDB());
+	var item = connectDB();
+	var resp = item[0];
+	console.log(item);
+	response.send(item);
 });
 
 var port = process.env.PORT || 5000;
