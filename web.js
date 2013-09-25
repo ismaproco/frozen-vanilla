@@ -9,7 +9,7 @@ app.get('/', function(request, response) {
 	var item = connectDB();
 	var resp = typeof(item);
 	console.log(resp);
-	response.send(resp);
+	
 });
 
 var port = process.env.PORT || 5000;
@@ -25,7 +25,7 @@ function connectDB()
     done();
     if(err) return console.error(err);
         console.log(result.rows);
-	return result.rows;
+	response.send(result.rows):
    });
   });
 }
