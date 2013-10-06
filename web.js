@@ -17,7 +17,12 @@ app.get('/allItems', function(request, response) {
 });
 
 app.get('/insert', function(request, response) {
-	data.insertJSON(pg,response);
+	data.insertJSON(pg,response,request);
+	response.send('Insert OK');
+});
+
+app.post('/insert', function(request, response) {
+	data.insertJSON(pg,response,request);
 	response.send('Insert OK');
 });
 
