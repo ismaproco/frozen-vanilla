@@ -18,9 +18,10 @@ Data.connectDB = function(pg,response)
         console.log(result.rows);
 	
 	response.send(result.rows);
+	client.end();
    });
    
-   client.end();
+   
    
   });
 };
@@ -35,9 +36,10 @@ Data.insertJSON = function(pg,response)
         console.log(result.rows);
 	
 	response.send(result.rows);
+	client.end();
    });
    
-   client.end();
+   
    
   });
 };
