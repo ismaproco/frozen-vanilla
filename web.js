@@ -2,7 +2,7 @@ var express = require("express");
 var pg = require("pg");
 
 //Internal vars
-var data = require("data.js");
+var data = require("./data.js");
 //
 
 
