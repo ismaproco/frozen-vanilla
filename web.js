@@ -1,12 +1,17 @@
 var express = require("express");
 var pg = require("pg");
 
+//Internal vars
+var data = require("data.js");
+//
+
+
 var app = express();
 app.use(express.logger());
 
-app.get('/', function(request, response) {
+app.get('/allItems', function(request, response) {
  // response.send('Probando!!!');
-	var item = connectDB(response);
+	var item = data.connectDB(response);
 	console.log(item);
 	
 });
@@ -22,15 +27,4 @@ app.listen(port, function() {
 });
 
 
-function connectDB(response)
-{
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-   client.query('SELECT * FROM requests', function(err, result) {
-    
-    if(err) return console.error(err);
-        console.log(result.rows);
-	
-	response.send(result.rows);
-   });
-  });
-}
+
