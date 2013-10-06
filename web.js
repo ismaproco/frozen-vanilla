@@ -16,8 +16,9 @@ app.get('/allItems', function(request, response) {
 	
 });
 
-app.get('/sava', function(request, response) {
-	response.send('Probando!!!');
+app.get('/insert', function(request, response) {
+	data.insertJSON(pg,response);
+	response.send('Insert OK');
 });
 
 app.get('/', function(request, response) {
