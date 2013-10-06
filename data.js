@@ -1,7 +1,7 @@
 //Module for data access functions
 var method = Data.prototype;
 
-var strIns = 'insert into products(json) values(\'{"type":"television", "price": 899.99, "resolution":"1080p"}\'),   (\'{"type":"shoe", "price": 74.99, "size":10.5}\');';
+var strIns = 'insert into requests(json) values(\'{"type":"television", "price": 899.99, "resolution":"1080p"}\'),   (\'{"type":"shoe", "price": 74.99, "size":10.5}\');';
 
 
 function Data()
