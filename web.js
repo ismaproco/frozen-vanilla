@@ -11,7 +11,7 @@ app.use(express.logger());
 
 app.get('/allItems', function(request, response) {
  // response.send('Probando!!!');
-	var item = data.connectDB(response);
+	var item = data.connectDB(pg,response);
 	console.log(item);
 	
 });
