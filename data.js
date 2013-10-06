@@ -1,7 +1,12 @@
 //Module for data access functions
+var method = Data.prototype;
 
+function Data()
+{
+	
+}
 
-function connectDB(pg,response)
+Data.connectDB = function(pg,response)
 {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('SELECT * FROM requests', function(err, result) {
@@ -12,4 +17,6 @@ function connectDB(pg,response)
 	response.send(result.rows);
    });
   });
-}
+};
+
+module.exports = Data;
