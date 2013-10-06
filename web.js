@@ -20,7 +20,7 @@ app.get('/sava', function(request, response) {
 	response.send('Probando!!!');
 });
 
-app.get('/sava', function(request, response) {
+app.get('/', function(request, response) {
 	response.send('Don\'t trust in this message!!!');
 });
 
