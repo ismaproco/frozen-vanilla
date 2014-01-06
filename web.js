@@ -5,7 +5,7 @@ var app = express();
 
 var cm = new mongo();
 cm.init();
-cm.saveInstagram();
+//cm.saveInstagram();
 
 
 
