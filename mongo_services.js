@@ -24,14 +24,14 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
 	console.log("/*=============*/");
 	
 	var obj = {
-	  link:  req.param('user'),
-	  url:  "Lala-Lala",
-	  text: "Lala-Lala",
-	  user:   "Lala-Lala",
-	  user_image_url: "Lala-Lala",
-	  date: "0321654987",
+	  user_full_name: req.param('user_full_name'),
+        user_id:  req.param('user_id'),
+        user_profile_picture:  req.param('user_profile_picture'),
+        user_name: req.param('user_name'),
+        image_low_resolution:   req.param('image_low_resolution'),
+        image_standard_resolution: req.param('image_standard_resolution'),
+        image_thumbnail: req.param('image_thumbnail'),
 	};
-	
 	
 	saveInstagramLink(model, obj);
 };
@@ -117,12 +117,13 @@ function CreateModelInstagramPost()
 {
     //create schema for instagram weapper
 	var instagram_post = new mongoose.Schema({
-	  link:  String,
-	  url:  String,
-	  text: String,
-	  user:   String,
-	  user_image_url: String,
-	  date: String,
+	    user_full_name: String,
+        user_id:  String,
+        user_profile_picture:  String,
+        user_name: String,
+        image_low_resolution:   String,
+        image_standard_resolution: String,
+        image_thumbnail: String,
 	});
 	
 	model =  db.model("instagram_post", instagram_post);

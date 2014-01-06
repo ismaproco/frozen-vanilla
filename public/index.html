@@ -48,7 +48,7 @@ app.factory('instagram', function($resource){
 // The controller. Notice that I've included our instagram service which we
 // defined below. It will be available inside the function automatically.
 
-function SwitchableGridController($scope, instagram){
+function SwitchableGridController($scope,$http, instagram){
 
 	// Default layout of the app. Clicking the buttons in the toolbar
 	// changes this value.
