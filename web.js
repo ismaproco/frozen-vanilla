@@ -1,10 +1,10 @@
 var express = require('express');
 var app = express();
-app.use(express.logger());
 
-app.get('/', function(request, response) {
-  response.send('Hello World!');
-});
+
+app.use(express.logger());
+app.use('/static', express.static(__dirname + '/public'));
+
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
