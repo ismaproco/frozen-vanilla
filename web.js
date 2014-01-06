@@ -20,7 +20,7 @@ app.post('/mongo',function(req,res){
 });
 
 app.get('/mongo',function(req,res){
-    cm.saveInstagram(res);
+    cm.saveInstagram(req,res);
 
     res.write('done get!');
     res.end();

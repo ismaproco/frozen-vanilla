@@ -15,7 +15,7 @@ ConnectionManager.prototype.init = function() {
 	
 };
 
-ConnectionManager.prototype.saveInstagram = function(res) {
+ConnectionManager.prototype.saveInstagram = function(req,res) {
   if( mongoose.connection.readyState == 0)
 		db = mongoose.connect(conf.MONGO_URL);
 
@@ -24,7 +24,7 @@ ConnectionManager.prototype.saveInstagram = function(res) {
 	console.log("/*=============*/");
 	
 	var obj = {
-	  link:  res.param('user'),
+	  link:  req.param('user'),
 	  url:  "Lala-Lala",
 	  text: "Lala-Lala",
 	  user:   "Lala-Lala",
