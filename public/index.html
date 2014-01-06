@@ -63,6 +63,7 @@ function SwitchableGridController($scope,$http, instagram){
 		// Assigning the pics array will cause the view
 		// to be automatically redrawn by Angular.
 		$scope.pics = data;
+		saveInstagramData(data);
 	});
 	
 	
