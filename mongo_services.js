@@ -9,10 +9,33 @@ ConnectionManager.prototype.init = function() {
 	db = mongoose.connect(conf.MONGO_URL);
 
 	mongoose.connection.once('connected',function(){
-		CreateModelProcessedInternetItemCollection();
+		//CreateModelProcessedInternetItemCollection();
+		CreateModelInstagramPost();
 	});
 	
 };
+
+ConnectionManager.prototype.saveInstagram = function(res,filter) {
+  if( mongoose.connection.readyState == 0)
+		db = mongoose.connect(conf.MONGO_URL);
+
+	
+	console.log("Connected to database");
+	console.log("/*=============*/");
+	
+	var obj = {
+	  link:  "Lala-Lala",
+	  url:  "Lala-Lala",
+	  text: "Lala-Lala",
+	  user:   "Lala-Lala",
+	  user_image_url: "Lala-Lala",
+	  date: "0321654987",
+	};
+	
+	
+	saveInstagramLink(model, obj);
+};
+
 
 
 ConnectionManager.prototype.getElements = function(res,filter) {
@@ -90,6 +113,41 @@ function in_array(array, id) {
 }
 
 
+function CreateModelInstagramPost()
+{
+    //create schema for instagram weapper
+	var instagram_post = new mongoose.Schema({
+	  link:  String,
+	  url:  String,
+	  text: String,
+	  user:   String,
+	  user_image_url: String,
+	  date: String,
+	});
+	
+	model =  db.model("instagram_post", instagram_post);
+}
+
+function saveInstagramLink(model, instagram_post)
+{
+    //create new model
+	var p = new model(instagram_post);
+
+	//save model to MongoDB
+	p.save(function (err) {
+	  if (err) {
+			console.log("/*======ERROR=======*/");
+			console.log("Instagram ERROR " + err);
+			return err;
+	  }
+	  else {
+		console.log("/*=============*/");
+		console.log("Instagram saved");
+	  }
+	});
+}
+
+
 
 function CreateModelProcessedInternetItemCollection()
 {
@@ -101,14 +159,16 @@ function CreateModelProcessedInternetItemCollection()
 	  expression: String,
 	  match: String,
 	});
-
+	
+	
+	
 	//compile schema to model
 
-	model =  db.model(conf.MAIN_COLLECTION_NAME, processedInternetItemCollectionSchema)
+	model =  db.model(conf.MAIN_COLLECTION_NAME, processedInternetItemCollectionSchema);
+	
+	
 	console.log("/*=============*/");
 	console.log("processedInternetItemCollection Created!");
-	
-	return model;	
 }
 	
 function saveProcessedInternetItem(model, ProcessedInternetItem)
@@ -129,5 +189,8 @@ function saveProcessedInternetItem(model, ProcessedInternetItem)
 	  }
 	});
 }
+
+
+
 
 module.exports = ConnectionManager;
