@@ -24,6 +24,7 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
 	console.log("/*=============*/");
 	
 	var obj = {
+	    link: req.param('link'),
 	  user_full_name: req.param('user_full_name'),
         user_id:  req.param('user_id'),
         user_profile_picture:  req.param('user_profile_picture'),
@@ -117,6 +118,7 @@ function CreateModelInstagramPost()
 {
     //create schema for instagram weapper
 	var instagram_post = new mongoose.Schema({
+	    link: String,
 	    user_full_name: String,
         user_id:  String,
         user_profile_picture:  String,
