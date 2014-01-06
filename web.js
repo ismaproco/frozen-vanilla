@@ -5,6 +5,9 @@ var app = express();
 app.use(express.logger());
 app.use(express.static(__dirname + '/public'));
 
+app.get('/mongo',function(req,res){
+    res.write('Hello World'); 
+});
 
 var port = process.env.PORT || 5000;
 
