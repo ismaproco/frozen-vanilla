@@ -11,31 +11,11 @@ ConnectionManager.prototype.init = function() {
 	mongoose.connection.once('connected',function(){
 		//CreateModelProcessedInternetItemCollection();
 		CreateModelInstagramPost();
-		
-		if( mongoose.connection.readyState == 0)
-		db = mongoose.connect(conf.MONGO_URL);
-
-	
-    	console.log("Connected to database");
-    	console.log("/*=============*/");
-    	
-    	var obj = {
-    	  link:  "Lala-Lala",
-    	  url:  "Lala-Lala",
-    	  text: "Lala-Lala",
-    	  user:   "Lala-Lala",
-    	  user_image_url: "Lala-Lala",
-    	  date: "0321654987",
-    	};
-    	
-    	
-    	saveInstagramLink(model, obj);
-		
 	});
 	
 };
 
-ConnectionManager.prototype.saveInstagram = function(res,filter) {
+ConnectionManager.prototype.saveInstagram = function(res) {
   if( mongoose.connection.readyState == 0)
 		db = mongoose.connect(conf.MONGO_URL);
 
@@ -44,7 +24,7 @@ ConnectionManager.prototype.saveInstagram = function(res,filter) {
 	console.log("/*=============*/");
 	
 	var obj = {
-	  link:  "Lala-Lala",
+	  link:  res.user,
 	  url:  "Lala-Lala",
 	  text: "Lala-Lala",
 	  user:   "Lala-Lala",

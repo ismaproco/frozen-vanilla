@@ -5,15 +5,24 @@ var app = express();
 
 var cm = new mongo();
 cm.init();
-//cm.saveInstagram();
+
 
 
 
 app.use(express.logger());
 app.use(express.static(__dirname + '/public'));
 
+
+app.post('/mongo',function(req,res){
+    cm.saveInstagram(res);
+    res.write('done post!');
+    res.end();
+});
+
 app.get('/mongo',function(req,res){
-    res.write('Hello World');
+    cm.saveInstagram(res);
+
+    res.write('done get!');
     res.end();
 });
 
