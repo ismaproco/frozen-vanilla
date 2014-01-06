@@ -24,7 +24,7 @@ ConnectionManager.prototype.saveInstagram = function(res) {
 	console.log("/*=============*/");
 	
 	var obj = {
-	  link:  res.user,
+	  link:  res.param('user'),
 	  url:  "Lala-Lala",
 	  text: "Lala-Lala",
 	  user:   "Lala-Lala",
