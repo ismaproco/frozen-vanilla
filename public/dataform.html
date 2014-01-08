@@ -26,17 +26,13 @@
                 
         </div>
         
-        <ul id="task_ul">
-                <!-- Loop through the services array, assign a click handler, and set or
-                        remove the "active" css class if needed -->
-                <li ng-repeat="element in instaList">
-                        <!-- Notice the use of the currency filter, it will format the price -->
+        
                         
-                        <div>
+                        <div ng-repeat="element in instaList">
                         <div >
                             <div style="float:left">
                                 <img src="{{element.user_profile_picture}}" alt=""  /><br />
-                                <div style="float:relative;">
+                                <div style="position:relative;top:-40px;background-color:#f7f7f7;opacity:0.8">
                                 <span class="title">{{element.user_name}}</span><br />
                                 <span class="title">likes:{{element.likes}}</span>
                                 </div>
@@ -47,8 +43,7 @@
                             <div style="clear:both;"></div>
                         </div>
                         </div>
-                </li>
-        </ul>
+        
 </div>
 <script type="text/javascript">
 var app = angular.module("tpui", ['ngResource']);
