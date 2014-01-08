@@ -32,6 +32,7 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
         image_low_resolution:   req.param('image_low_resolution'),
         image_standard_resolution: req.param('image_standard_resolution'),
         image_thumbnail: req.param('image_thumbnail'),
+        likes: parseInt(req.param('likes')),
         date: req.param('date'),
 	};
 	
@@ -151,6 +152,7 @@ function CreateModelInstagramPost()
         image_low_resolution:   String,
         image_standard_resolution: String,
         image_thumbnail: String,
+        likes:Number,
         date:String,
 	});
 	
