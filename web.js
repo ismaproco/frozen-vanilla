@@ -14,12 +14,18 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.post('/mongo',function(req,res){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With"); 
+    
     cm.saveInstagram(req,res);
     res.write('done post!');
     res.end();
 });
 
 app.get('/mongo',function(req,res){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With"); 
+    
     cm.saveInstagram(req,res);
 
     res.write('done get!');
@@ -28,6 +34,9 @@ app.get('/mongo',function(req,res){
 
 
 app.get('/instacache_load',function(req,res){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With"); 
+    
     cm.loadInstagram(req,res);
 });
 
