@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.post('/mongo',function(req,res){
-    cm.saveInstagram(res);
+    cm.saveInstagram(req,res);
     res.write('done post!');
     res.end();
 });
