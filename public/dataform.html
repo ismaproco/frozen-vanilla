@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>My HTML File</title>
+  <title>Grid Insta</title>
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   
@@ -13,13 +13,7 @@
 <div ng-app="tpui" ng-controller="ListController">
         
         
-        <div class="bar">
-
-                <!-- These two buttons switch the layout variable,
-                         which causes the correct UL to be shown. -->
-                <span class="bar_text">Information List</span>
-                
-        </div>
+        
         
         
                         
@@ -28,7 +22,7 @@
                             <div style="float:left">
                                 <img src="{{element.user_profile_picture}}" alt=""  /><br />
                                 <div style="position:relative;top:-40px;background-color:#f7f7f7;opacity:0.8">
-                                <span class="title">{{element.user_name}}</span><br />
+                                <span class="title">{{element.user_name}}</span>
                                 <span class="title">likes:{{element.likes}}</span>
                                 </div>
                             </div>
