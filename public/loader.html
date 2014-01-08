@@ -1,0 +1,194 @@
+<!doctype html>
+<meta charset="utf-8">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+  <script type="text/javascript">
+  
+  
+  setTimeout(function(){
+       window.location.reload(1);
+    }, 30git add 000);
+  
+  serialize = function(obj) {
+  var str = [];
+  for(var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+}
+  
+  
+	// Define a new module. This time we declare a dependency on
+// the ngResource module, so we can work with the Instagram API
+
+var app = angular.module("switchableGrid", ['ngResource']);
+
+// Create and register the new "instagram" service
+app.factory('instagram', function($resource){
+
+	return {
+		fetchPopular: function(callback){
+
+			// The ngResource module gives us the $resource service. It makes working with
+			// AJAX easy. Here I am using the client_id of a test app. Replace it with yours.
+
+			var api = $resource('https://api.instagram.com/v1/media/popular?client_id=:client_id&callback=JSON_CALLBACK',{
+				client_id: '642176ece1e7445e99244cec26f4de1f'
+			},{
+				// This creates an action which we've chosen to name "fetch". It issues
+				// an JSONP request to the URL of the resource. JSONP requires that the
+				// callback=JSON_CALLBACK part is added to the URL.
+
+				fetch:{method:'JSONP'}
+			});
+
+			api.fetch(function(response){
+
+				// Call the supplied callback function
+				callback(response.data);
+
+			});
+		}
+	}
+
+});
+
+// The controller. Notice that I've included our instagram service which we
+// defined below. It will be available inside the function automatically.
+
+function SwitchableGridController($scope,$http, instagram){
+
+	// Default layout of the app. Clicking the buttons in the toolbar
+	// changes this value.
+
+	$scope.layout = 'grid';
+
+	$scope.pics = [];
+
+	// Use the instagram service and fetch a list of the popular pics
+	instagram.fetchPopular(function(data){
+
+		// Assigning the pics array will cause the view
+		// to be automatically redrawn by Angular.
+		$scope.pics = data;
+		saveInstagramData(data);
+	});
+	
+	
+	
+	
+	function saveInstagramData(instagramInformation)
+	{
+	    for(var d in instagramInformation){
+        
+        
+        var obj = instagramInformation[d];
+        var odata = {
+            "id":obj.id,
+            "user_full_name":obj.user.full_name , 
+            "user_id": obj.user.id ,
+            "user_profile_picture": obj.user.profile_picture ,
+            "user_name": obj.user.username,
+            "image_low_resolution": obj.images.low_resolution.url,
+            "image_standard_resolution" : obj.images.standard_resolution.url,
+            "image_thumbnail" : obj.images.thumbnail.url,
+            "likes":obj.likes.count,
+            "date":obj.created_time
+        }
+        
+        $http({method: 'GET', url: '/mongo?'+serialize(odata),contentType:false, processData: false }).
+          success(function(data, status, headers, config) {
+            // this callback will be called asynchronously
+            // when the response is available
+            
+          }).
+          error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            
+          });
+	            
+	    }
+	}
+	
+	
+	
+	/*
+	$scope.informationList = [
+		{
+		    id:101,
+			visited: true,
+			url: 'http://google.com',
+			title: 'Java Developer',
+			query: 'OR(OR(OR(net,pyton),OR(sharepoint,sharepoint)),OR(OR(relo,visa),OR(h1b,sponsor)))'
+		},{
+		    id:102,
+			visited: false,
+			url: 'http://jobview.monster.com/NET-Developer-Job-Del-Mar-CA-US-128792498.aspx',
+			title: '.NET Developer',
+			query: 'OR(OR(OR(net,pyton),OR(sharepoint,sharepoint)),OR(OR(relo,visa),OR(h1b,sponsor)))'
+		},{
+		    id:103,
+			visited: false,
+			url: 'http://jobview.monster.com/SharePoint-Project-Manager-Job-New-York-NY-US-128792610.aspx',
+			title: 'SharePoint Project Manager',
+			query: 'OR(OR(OR(net,pyton),OR(sharepoint,sharepoint)),OR(OR(relo,visa),OR(h1b,sponsor)))'
+		},{
+		    id:104,
+			visited: true,
+			url: 'http://jobview.monster.com/Database-Administrator-Oracle-Access-SAS-Job-Oakland-CA-US-128792234.aspx',
+			title: 'Database Administrator - Oracle, Access, SAS',
+			query: 'OR(OR(OR(net,pyton),OR(sharepoint,sharepoint)),OR(OR(relo,visa),OR(h1b,sponsor)))'
+		}
+	];
+	*/
+	
+	
+	
+
+}
+
+
+  </script>
+</head>
+<body>
+
+<div ng-app="switchableGrid" ng-controller="SwitchableGridController">
+	
+	<div class="bar">
+
+		<!-- These two buttons switch the layout variable,
+			 which causes the correct UL to be shown. -->
+
+		<a class="list-icon" ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"></a>
+		<a class="grid-icon" ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"></a>
+	</div>
+
+	<!-- We have two layouts. We choose which one to show depending on the "layout" binding -->
+
+	<ul ng-show="layout == 'grid'" class="grid">
+		<!-- A view with big photos and no text -->
+		<li ng-repeat="p in pics">
+			<a href="{{p.link}}" target="_blank"><img ng-src="{{p.images.low_resolution.url}}" /></a>
+		</li>
+	</ul>
+
+	<ul ng-show="layout == 'list'" class="list">
+		<!-- A compact view smaller photos and titles -->
+		<li ng-repeat="p in pics">
+			<a href="{{p.link}}" target="_blank"><img ng-src="{{p.images.thumbnail.url}}" /></a>
+			<p>{{p.caption.text}}</p>
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>
