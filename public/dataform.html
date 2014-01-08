@@ -52,7 +52,7 @@ var app = angular.module("tpui", ['ngResource']);
 function ListController($scope,$http){
 
         $scope.instaList = [];
-        $scope.lala = "kilo";
+        $scope.lala = "Instagram Links";
         
         $http.get('/instacache_load').success(
                 function(data, status, headers, config) {
