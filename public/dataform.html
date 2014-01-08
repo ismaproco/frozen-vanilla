@@ -6,7 +6,12 @@
   <title>Grid Insta</title>
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/bootstrap.css">
-  
+  <style>
+  .inner_div
+  {
+     position:relative;top:-40px;background-color:#f7f7f7;opacity:0.8; 
+  }
+  </style>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
 </head>
@@ -21,7 +26,7 @@
                         <div >
                             <div style="float:left">
                                 <img src="{{element.user_profile_picture}}" alt=""  />
-                                <div style="position:relative;top:-40px;background-color:#f7f7f7;opacity:0.8">
+                                <div class="inner_div">
                                 <span class="title">{{element.user_name}}</span><br />
                                 <span class="title">likes:{{element.likes}}</span>
                                 </div>
