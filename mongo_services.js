@@ -180,9 +180,15 @@ function saveInstagramLink(model, instagram_post)
 	});
 }
 
-function loadInstagramLink(model, filter, res)
+function loadInstagramLink(model, filter, res, nlimit)
 {
-    model.find(filter,null,{sort:{date:-1},limit:10}, function(err, doc) {
+    
+    if (typeof(nlimit) == "undefined" || nlimit == "")
+        nlimit = 1000
+        
+    
+    
+    model.find(filter,null,{sort:{date:-1},limit:nlimit}, function(err, doc) {
                 mongoose.connection.close()
                 if (err) {
                         return err
