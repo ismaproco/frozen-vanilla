@@ -32,6 +32,7 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
         image_low_resolution:   req.param('image_low_resolution'),
         image_standard_resolution: req.param('image_standard_resolution'),
         image_thumbnail: req.param('image_thumbnail'),
+        date, req.param('date'),
 	};
 	
 	saveInstagramLink(model, obj);
