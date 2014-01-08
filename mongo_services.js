@@ -182,7 +182,7 @@ function saveInstagramLink(model, instagram_post)
 
 function loadInstagramLink(model, filter, res)
 {
-    model.find(filter,null,{sort:{date:-1}}, function(err, doc) {
+    model.find(filter,null,{sort:{date:-1},limit:10}, function(err, doc) {
                 mongoose.connection.close()
                 if (err) {
                         return err
