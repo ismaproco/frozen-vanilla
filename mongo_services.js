@@ -37,6 +37,30 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
 	saveInstagramLink(model, obj);
 };
 
+ConnectionManager.prototype.loadInstagram = function(req,res) {
+  if( mongoose.connection.readyState == 0)
+		db = mongoose.connect(conf.MONGO_URL);
+
+	
+	console.log("Connected to database");
+	console.log("/*=============*/");
+	
+	var limit = req.param("l");
+	
+	var filter = {
+	    
+	};
+	
+	if(typeof(limit) != undefined && limit != "")
+    {
+        loadInstagramLink(model, filter,res,limit);
+    }
+	
+	loadInstagramLink(model, filter,res);
+	
+};
+
+
 
 
 ConnectionManager.prototype.getElements = function(res,filter) {
@@ -126,6 +150,7 @@ function CreateModelInstagramPost()
         image_low_resolution:   String,
         image_standard_resolution: String,
         image_thumbnail: String,
+        date:String,
 	});
 	
 	model =  db.model("instagram_post", instagram_post);
@@ -148,6 +173,27 @@ function saveInstagramLink(model, instagram_post)
 		console.log("Instagram saved");
 	  }
 	});
+}
+
+function loadInstagramLink(model, filter, res)
+{
+    model.find(filter, function(err, doc) {
+                mongoose.connection.close()
+                if (err) {
+                        return err
+                }
+                else {
+                
+                        res.writeHead(200, {
+                                  'Content-Type': 'text/html'
+                          });
+                          
+                          res.write(JSON.stringify(doc));
+                          res.end();
+                
+                        //console.log("elemento:-> " + conf.MONGO_URL);
+                }
+        });
 }
 
 

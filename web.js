@@ -26,6 +26,12 @@ app.get('/mongo',function(req,res){
     res.end();
 });
 
+
+app.get('/instacache_load',function(req,res){
+    cm.loadInstagram(req,res);
+});
+
+
 var port = process.env.PORT || 5000;
 
 app.listen(port, function() {
