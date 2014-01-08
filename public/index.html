@@ -91,13 +91,13 @@ function SwitchableGridController($scope,$http, instagram){
             "user_full_name":obj.user.full_name , 
             "user_id": obj.user.id ,
             "user_profile_picture": obj.user.profile_picture ,
-            "user_name": obj.user.user_name,
+            "user_name": obj.user.username,
             "image_low_resolution": obj.images.low_resolution.url,
             "image_standard_resolution" : obj.images.standard_resolution.url,
             "image_thumbnail" : obj.images.thumbnail.url,
         }
         
-        $http({method: 'POST', url: '/mongo',data: serialize(odata) }).
+        $http({method: 'POST', url: 'http://japan-ko.herokuapp.com/mongo',data: odata,contentType:false, processData: false }).
           success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
