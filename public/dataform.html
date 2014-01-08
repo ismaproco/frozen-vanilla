@@ -27,27 +27,40 @@
         
         
         
-                        <div class="bar">
+                        <div>
                     		<!-- These two buttons switch the layout variable,
                     			 which causes the correct UL to be shown. -->
                     
                     		<a class="list-icon" ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"></a>
                     		<a class="grid-icon" ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"></a>
                     	</div>
-                        <div ng-repeat="element in instaList" style="float:left;">
-                        <div >
-                            <div class="left_div">
-                                <img src="{{element.user_profile_picture}}" alt=""  />
-                                <div class="inner_div">
-                                <span class="title">{{element.user_name}}</span><br />
-                                <span class="title">likes:{{element.likes}}</span>
+                    	
+                    	<div ng-show="layout == 'list'">
+                            <div ng-repeat="element in instaList" style="float:left;">
+                                <div >
+                                    <div class="left_div">
+                                        <img src="{{element.user_profile_picture}}" alt=""  />
+                                        <div class="inner_div">
+                                        <span class="title">{{element.user_name}}</span><br />
+                                        <span class="title">likes:{{element.likes}}</span>
+                                        </div>
+                                    </div>
+                                    <div style="float:left">
+                                        <img src="{{element.image_thumbnail}}" alt="" />
+                                    </div>
+                                    <div style="clear:both;"></div>
                                 </div>
                             </div>
-                            <div style="float:left">
-                                <img src="{{element.image_thumbnail}}" alt="" />
-                            </div>
-                            <div style="clear:both;"></div>
                         </div>
+                        <div ng-show="layout == 'grid'">
+                            <div ng-repeat="element in instaList" style="float:left;">
+                                <div >
+                                    <div style="float:left">
+                                        <img src="{{element.image_thumbnail}}" alt="" />
+                                    </div>
+                                    <div style="clear:both;"></div>
+                                </div>
+                            </div>
                         </div>
         
 </div>
