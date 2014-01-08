@@ -184,7 +184,7 @@ function loadInstagramLink(model, filter, res, nlimit)
 {
     
     if (typeof(nlimit) == "undefined" || nlimit == "")
-        nlimit = 1000
+        nlimit = 100
         
     
     
