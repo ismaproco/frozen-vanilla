@@ -32,20 +32,19 @@
                 <li ng-repeat="element in instaList">
                         <!-- Notice the use of the currency filter, it will format the price -->
                         
-                        
+                        <div>
                         <div >
                             <div style="float:left">
-                                <img src="{{element.user_profile_picture}}" alt="" />
-                                <span class="title">{{element.user_name}}</span>
+                                <img src="{{element.user_profile_picture}}" alt="" /><br />
+                                <span class="title">{{element.user_name}}</span><br />
                                 <span class="title">likes:{{element.likes}}</span>
-                                <br/><a href="{{element.image_standard_resolution}}" target="_blank">{{element.image_standard_resolution}}</a>
                             </div>
                             <div style="float:left">
                                 <img src="{{element.image_thumbnail}}" alt="" />
                             </div>
-                            
+                            <div style="clear:both;"></div>
                         </div>
-                        
+                        </div>
                 </li>
         </ul>
 </div>
