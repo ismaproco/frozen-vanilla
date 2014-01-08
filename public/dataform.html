@@ -12,12 +12,7 @@
 </head>
 <div ng-app="tpui" ng-controller="ListController">
         
-        <div class="filters">
-                <div class="td_left">Date:<input type="text" id="filter_date"></input></div>
-                <div class="td_left">Text:<input type="text" id="filter_text"></input></div>
-                <div class="td_left"><input type="button" value="Search"></input></div>
-                <div class="td_clear"></div>
-        </div>
+        
         <div class="bar">
 
                 <!-- These two buttons switch the layout variable,
@@ -28,7 +23,7 @@
         
         
                         
-                        <div ng-repeat="element in instaList">
+                        <div ng-repeat="element in instaList" style="float:left;">
                         <div >
                             <div style="float:left">
                                 <img src="{{element.user_profile_picture}}" alt=""  /><br />
