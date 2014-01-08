@@ -1,0 +1,67 @@
+<!doctype html>
+<meta charset="utf-8">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+</head>
+<div ng-app="tpui" ng-controller="ListController">
+        
+        <div class="filters">
+                <div class="td_left">Date:<input type="text" id="filter_date"></input></div>
+                <div class="td_left">Text:<input type="text" id="filter_text"></input></div>
+                <div class="td_left"><input type="button" value="Search"></input></div>
+                <div class="td_clear"></div>
+        </div>
+        <div class="bar">
+
+                <!-- These two buttons switch the layout variable,
+                         which causes the correct UL to be shown. -->
+                <span class="bar_text">Information List</span>
+                
+        </div>
+        
+        <ul id="task_ul">
+                <!-- Loop through the services array, assign a click handler, and set or
+                        remove the "active" css class if needed -->
+                <li ng-repeat="element in instaList">
+                        <!-- Notice the use of the currency filter, it will format the price -->
+                        
+                        
+                        <div class="wrapper">
+                <div class="left">
+                    <span class="title">{{element.date}}</span>
+                    <span class="title">{{element.user_name}}</span>
+                    <span class="title">{{element.user_profile_picture}}</span>
+                    <span class="title">{{element.likes}}</span>
+                    <br/><a href="{{element.image_standard_resolution}}" target="_blank">{{element.image_standard_resolution}}</a>
+                </div>
+            </div>
+                        
+                </li>
+        </ul>
+</div>
+<script type="text/javascript">
+var app = angular.module("tpui", ['ngResource']);
+
+function ListController($scope,$http){
+
+        $scope.instaList = [];
+        $scope.lala = "kilo";
+        
+        $http.get('/instacache_load').success(
+                function(data, status, headers, config) {
+                        $scope.instaList = data;
+
+                });
+        
+}
+
+
+  </script>
+</html>
