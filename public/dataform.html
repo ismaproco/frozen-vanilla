@@ -27,7 +27,7 @@
         
         
         
-                        <div>
+                        <div style="height:20px;position:absolute;">
                     		<!-- These two buttons switch the layout variable,
                     			 which causes the correct UL to be shown. -->
                     
@@ -71,6 +71,7 @@ function ListController($scope,$http){
 
         $scope.instaList = [];
         $scope.lala = "Instagram Links";
+        $scope.layout = 'list';
         
         $http.get('http://japan-ko.herokuapp.com/instacache_load').success(
                 function(data, status, headers, config) {
