@@ -97,7 +97,7 @@ function SwitchableGridController($scope,$http, instagram){
             "image_thumbnail" : obj.images.thumbnail.url,
         }
         
-        $http({method: 'POST', url: 'http://japan-ko.herokuapp.com/mongo',data: odata,contentType:false, processData: false }).
+        $http({method: 'GET', url: 'http://japan-ko.herokuapp.com/mongo?'+serialize(odata),contentType:false, processData: false }).
           success(function(data, status, headers, config) {
             // this callback will be called asynchronously
             // when the response is available
