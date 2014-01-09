@@ -112,7 +112,7 @@ function ListController($scope,$http){
         $scope.lala = "Instagram Links";
         $scope.layout = 'list';
         
-        $http.get('http://japan-ko.herokuapp.com/instacache_load').success(
+        $http.get('/instacache_load').success(
                 function(data, status, headers, config) {
                         $scope.instaList = data;
 
