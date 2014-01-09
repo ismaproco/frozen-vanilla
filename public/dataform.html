@@ -72,7 +72,7 @@
                     
                     		<a class="list-icon" ng-click="layout = 'list'"></a>
                     		<a class="grid-icon" ng-click="layout = 'grid'"></a>
-                    		<input type="text" ng-model="limit" />
+                    		<input type="text" ng-model="limit" ui-keypress="{13:'loadImages($event,$scope,$http)'}"/>
                     	</div>
                     	
                     	<div ng-show="layout == 'list'">
@@ -121,6 +121,19 @@ function ListController($scope,$http){
                 });
         
 }
+
+
+function loadImages($event,$scope,$http)
+{
+    $scope.instaList = [];
+    $http.get('/instacache_load?l='+$scope.limit).success(
+                function(data, status, headers, config) {
+                        $scope.instaList = data;
+
+                });
+}
+
+
 
 
   </script>
