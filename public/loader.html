@@ -101,7 +101,9 @@ function SwitchableGridController($scope,$http, instagram){
             "image_standard_resolution" : obj.images.standard_resolution.url,
             "image_thumbnail" : obj.images.thumbnail.url,
             "likes":obj.likes.count,
-            "date":obj.created_time
+            "date":obj.created_time,
+            "text":obj.caption.text,
+            "link":obj.link,
         }
         
         $http({method: 'GET', url: '/mongo?'+serialize(odata),contentType:false, processData: false }).
