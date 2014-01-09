@@ -35,6 +35,7 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
         likes: parseInt(req.param('likes')),
         date: req.param('date'),
         instagram_id:req.param('id'),
+        text:req.param('text'),
 	};
 	
 	saveInstagramLink(model, obj);
@@ -57,9 +58,10 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	if(typeof(limit) != undefined && limit != "")
     {
         loadInstagramLink(model, filter,res,limit);
+    }else
+    {
+	    loadInstagramLink(model, filter,res);
     }
-	
-	loadInstagramLink(model, filter,res);
 	
 };
 
@@ -156,6 +158,7 @@ function CreateModelInstagramPost()
         image_thumbnail: String,
         likes:Number,
         date:String,
+        text:String,
 	});
 	
 	model =  db.model("instagram_post", instagram_post);
