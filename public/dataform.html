@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                     <div style="float:left">
-                                        <img src="{{element.image_thumbnail}}" alt="" />
+                                        <img src="{{element.image_thumbnail}}" alt="" onError="this.onerror=null;this.src='/img/white.png';"  />
                                     </div>
                                     <div style="clear:both;"></div>
                                 </div>
@@ -95,7 +95,7 @@
                             <div ng-repeat="element in instaList" style="float:left;">
                                 <div >
                                     <div style="float:left">
-                                        <img src="{{element.image_thumbnail}}" alt="" />
+                                        <img src="{{element.image_thumbnail}}" alt="" onError="this.onerror=null;this.src='/img/white.png';" />
                                     </div>
                                     <div style="clear:both;"></div>
                                 </div>
