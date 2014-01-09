@@ -72,7 +72,7 @@
                     
                     		<a class="list-icon" ng-click="layout = 'list'"></a>
                     		<a class="grid-icon" ng-click="layout = 'grid'"></a>
-                    		<input type="text" ng-model="limit" ui-keypress="{13:'loadImages($event,$scope,$http)'}"/>
+                    		<input type="text" ng-model="limit" ng-enter="loadImages($event,$scope,$http)" />
                     	</div>
                     	
                     	<div ng-show="layout == 'list'">
@@ -106,6 +106,22 @@
 </div>
 <script type="text/javascript">
 var app = angular.module("tpui", ['ngResource']);
+
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+
 
 function ListController($scope,$http){
 
