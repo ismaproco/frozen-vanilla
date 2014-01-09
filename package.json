@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "express": "~3.3.4",
-    "mongoose":"3.8.x"
+    "mongoose":"3.8.x",
+    "nodetime":"0.8.x"
   },
   "engines": {
     "node": "0.10.x",
@@ -22,6 +23,6 @@
     "node",
     "heroku"
   ],
-  "author": "Ismael Jimenez",
+  "author": "@ismapro",
   "license": "MIT"
 }

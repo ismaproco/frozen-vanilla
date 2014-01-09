@@ -1,3 +1,8 @@
+require('nodetime').profile({
+    accountKey: '53f9775d27375f89daf9ed8b4c173c963da8b770', 
+    appName: 'Node.js Application'
+  });
+
 var express = require('express');
 var mongo = require('./mongo_services.js');
 
