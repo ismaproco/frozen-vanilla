@@ -194,11 +194,6 @@ function loadInstagramLink(model, filter, res, nlimit)
                         return err
                 }
                 else {
-                
-                        res.writeHead(200, {
-                                  'Content-Type': 'text/html'
-                          });
-                          
                           res.write(JSON.stringify(doc));
                           res.end();
                 
