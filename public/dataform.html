@@ -72,6 +72,7 @@
                     
                     		<a class="list-icon" ng-click="layout = 'list'"></a>
                     		<a class="grid-icon" ng-click="layout = 'grid'"></a>
+                    		<input type="text" ng-model="limit" />
                     	</div>
                     	
                     	<div ng-show="layout == 'list'">
@@ -111,8 +112,9 @@ function ListController($scope,$http){
         $scope.instaList = [];
         $scope.lala = "Instagram Links";
         $scope.layout = 'list';
+        $scope.limit = 10;
         
-        $http.get('/instacache_load').success(
+        $http.get('/instacache_load?l='+$scope.limit).success(
                 function(data, status, headers, config) {
                         $scope.instaList = data;
 
