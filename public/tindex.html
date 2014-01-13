@@ -1,0 +1,160 @@
+<!doctype html>
+<meta charset="utf-8">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Grid Insta</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <style>
+  .inner_div
+  {
+     position:relative;top:-40px;background-color:#f7f7f7;opacity:0.8; 
+  }
+  
+  .left_div
+  {
+    float:left;
+    height:150px;
+  }
+  
+  
+  .list-icon {
+        background-image: url(/img/send.png);
+        background-repeat:no-repeat;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-decoration: none !important;
+        margin-right: 5px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .grid-icon {
+        background-image: url(/img/edit.png);
+        background-repeat:no-repeat;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-decoration: none !important;
+        margin-right: 5px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .vertical_bar
+    {
+        height: 80px;
+        position: absolute;
+        width: 34px;
+        right: 30px;
+        top: 10px;
+    }
+
+  
+  
+  
+  
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+</head>
+<div ng-app="tpui" ng-controller="ListController">
+        
+        
+        
+        
+        
+                        <div class="vertical_bar">
+                    		<!-- These two buttons switch the layout variable,
+                    			 which causes the correct UL to be shown. -->
+                    
+                    		<a class="list-icon" ng-click="layout = 'list'"></a>
+                    		<a class="grid-icon" ng-click="layout = 'grid'"></a>
+                    		<input type="text" ng-model="limit" ng-change="loadImages($event)" style="width:30px;" />
+                    	</div>
+                    	
+                    <div class="post" ng-repeat="element in instaList">
+                        <div class="outer-image">
+                            <!-- This should be the image container -->
+                            <div id="image-container">
+                                
+                            </div>
+                        </div>
+                        <div class="outer-info">
+                            <!-- This should be user information container -->
+                            <div id="user-container">
+                                <div id="user-image" style="background-image:url('{{element.image_standard_resolution}}')">
+                                </div>
+                                <div id="user-name">
+                                    <div>{{element.user_name}}
+                                    </div>
+                                    <div>{{element.date}}
+                                    </div>
+                                    <div>{{element.text}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="rank-container">
+                            </div>
+                        </div>
+                    </div>
+                    	
+                    	
+                    	
+        
+</div>
+<script type="text/javascript">
+var app = angular.module("tpui", ['ngResource']);
+
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+
+
+function ListController($scope,$http){
+
+        $scope.instaList = [];
+        $scope.lala = "Instagram Links";
+        $scope.limit = 10;
+        
+        
+        
+        $scope.loadImages = function(ev) {
+          //if (ev.which==13)
+            $http.get('/instacache_load?l='+$scope.limit).success(
+                function(data, status, headers, config) {
+                        $scope.instaList = data;
+
+                });
+        }
+        
+        
+        
+        $http.get('/instacache_load?l='+$scope.limit).success(
+                function(data, status, headers, config) {
+                        $scope.instaList = data;
+
+                });
+        
+}
+
+
+
+
+
+
+  </script>
+</html>
