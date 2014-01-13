@@ -230,7 +230,7 @@ function ListController($scope,$http){
           //if (ev.which==13)
             $http.get('/instacache_load?l='+$scope.limit).success(
                 function(data, status, headers, config) {
-                        $scope.instaList.concat( data);
+                        $scope.instaList = $scope.instaList.concat( data);
 
                 });
         }
@@ -240,9 +240,9 @@ function ListController($scope,$http){
           //if (ev.which==13)
             $http.get('/instacache_load?l='+$scope.limit +'&p='+ $scope.pcount ).success(
                 function(data, status, headers, config) {
-                        $scope.instaList.concat( data);
+                        $scope.instaList = $scope.instaList.concat( data);
                         $scope.pcount += 1;
-
+                        alert("hola");
                 });
         }
         
@@ -251,7 +251,7 @@ function ListController($scope,$http){
         
         $http.get('/instacache_load?l='+$scope.limit).success(
                 function(data, status, headers, config) {
-                        $scope.instaList.concat( data);
+                        $scope.instaList = $scope.instaList.concat( data);
 
                 });
         
