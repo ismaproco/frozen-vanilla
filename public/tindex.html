@@ -240,9 +240,8 @@ function ListController($scope,$http){
           //if (ev.which==13)
             $http.get('/instacache_load?l='+$scope.limit +'&p='+ $scope.pcount ).success(
                 function(data, status, headers, config) {
-                        $scope.instaList = $scope.instaList.concat( data);
                         $scope.pcount += 1;
-                        alert("hola");
+                        $scope.instaList = $scope.instaList.concat( data);
                 });
         }
         
