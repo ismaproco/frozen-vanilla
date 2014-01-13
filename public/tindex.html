@@ -195,7 +195,7 @@ border-radius: 10px; /* future proofing */
                         </div>
                     </div>
                     	
-                    	
+                    <div class="bar" ng-click="loadImagesPaginating($event)">load more {{pcount}}</div>	
                     	
         
 </div>
@@ -223,25 +223,43 @@ function ListController($scope,$http){
         $scope.instaList = [];
         $scope.lala = "Instagram Links";
         $scope.limit = 10;
-        
+        $scope.pcount = 0;
         
         
         $scope.loadImages = function(ev) {
           //if (ev.which==13)
             $http.get('/instacache_load?l='+$scope.limit).success(
                 function(data, status, headers, config) {
-                        $scope.instaList = data;
+                        $scope.instaList.concat( data);
+
+                });
+        }
+        
+        
+        $scope.loadImagesPaginating = function(ev) {
+          //if (ev.which==13)
+            $http.get('/instacache_load?l='+$scope.limit +'?p='+ $scope.pcount ).success(
+                function(data, status, headers, config) {
+                        $scope.instaList.concat( data);
+                        $scope.pcount += 1;
 
                 });
         }
         
         
         
+        
         $http.get('/instacache_load?l='+$scope.limit).success(
                 function(data, status, headers, config) {
-                        $scope.instaList = data;
+                        $scope.instaList.concat( data);
 
                 });
+        
+        
+        
+        
+        
+        
         
 }
 
