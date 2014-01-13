@@ -50,6 +50,7 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	console.log("/*=============*/");
 	
 	var limit = req.param("l");
+	var page = req.param("p");
 	
 	var filter = {
 	    
@@ -57,7 +58,7 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	
 	if(typeof(limit) != undefined && limit != "")
     {
-        loadInstagramLink(model, filter,res,limit);
+        loadInstagramLink(model, filter,res,limit,page);
     }else
     {
 	    loadInstagramLink(model, filter,res);
@@ -183,15 +184,26 @@ function saveInstagramLink(model, instagram_post)
 	});
 }
 
-function loadInstagramLink(model, filter, res, nlimit)
+function loadInstagramLink(model, filter, res, nlimit,page_num)
 {
     
+    
+    var page = 0;
+    
     if (typeof(nlimit) == "undefined" || nlimit == "")
-        nlimit = 100
+    {    nlimit = 100};
+    
+    if (typeof(page_num) == "undefined" || page_num == "")
+    {    page = 0}
+    else
+    {
+        page = parseInt(page_num)    
+    };
+    
         
+    var elem_skip = page * nlimit;
     
-    
-    model.find(filter,null,{sort:{date:-1},limit:nlimit}, function(err, doc) {
+    model.find(filter,null,{sort:{date:-1},limit:nlimit,skip:elem_skip}, function(err, doc) {
                 mongoose.connection.close()
                 if (err) {
                         return err
