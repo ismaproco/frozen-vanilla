@@ -62,7 +62,6 @@ body
 
 .post
 {
-    background-color:#0f0f0f;
     width:620px;
     position:relative;
     height:330px;
@@ -84,7 +83,7 @@ body
 {
     width:100%;
     height:100%;
-    background-color:#ff7777;
+    
     position:relative;
 }
 
@@ -104,7 +103,7 @@ body
     width:100%;
     height:150px;
     top:5px;
-    background-color:#ff7777;
+    
     position:relative;    
 }
 
@@ -112,7 +111,7 @@ body
 {
     width:50px;
     height:50px;
-    background-color:#ff77ff;
+    
     top: 10px;
     left: 10px;
     position:absolute; 
@@ -124,7 +123,7 @@ body
     margin-left:70px;
     top:11px;
     position:relative;
-    background-color:#ff77f7;
+    
     width: 200px;
 }
 
@@ -133,7 +132,7 @@ body
     width:100%;
     height:140px;
     margin-top:10px;
-    background-color:#ff77f7;
+    
     position:relative;    
 }
   
@@ -160,14 +159,14 @@ body
                     <div class="post" ng-repeat="element in instaList">
                         <div class="outer-image">
                             <!-- This should be the image container -->
-                            <div id="image-container">
+                            <div id="image-container" style="background-image:url('{{element.image_low_resolution}}')">
                                 
                             </div>
                         </div>
                         <div class="outer-info">
                             <!-- This should be user information container -->
                             <div id="user-container">
-                                <div id="user-image" style="background-image:url('{{element.image_standard_resolution}}')">
+                                <div id="user-image" style="background-image:url('{{element.user_profile_picture}}')">
                                 </div>
                                 <div id="user-name">
                                     <div>{{element.user_name}}
