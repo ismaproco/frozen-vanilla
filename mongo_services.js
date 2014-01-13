@@ -53,6 +53,8 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	var page = req.param("p");
 	var current_date = req.param("cd");
 	
+	console.log("parameter: " + limit + "," + page + "," + current_date);
+	
 	var filter = {
 	    
 	};
