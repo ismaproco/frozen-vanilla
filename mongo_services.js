@@ -51,10 +51,17 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	
 	var limit = req.param("l");
 	var page = req.param("p");
+	var current_date = req.param("cd");
 	
 	var filter = {
 	    
 	};
+	
+	
+	if(typeof(current_date) != undefined && current_date != "")
+    {
+        filter = {"date":{$lt:current_date}};
+    }
 	
 	if(typeof(limit) != undefined && limit != "")
     {
@@ -200,7 +207,6 @@ function loadInstagramLink(model, filter, res, nlimit,page_num)
         page = parseInt(page_num)    
     };
     
-        
     var elem_skip = page * nlimit;
     
     model.find(filter,null,{sort:{date:-1},limit:nlimit,skip:elem_skip}, function(err, doc) {
