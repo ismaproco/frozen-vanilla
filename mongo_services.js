@@ -59,11 +59,11 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	    
 	};
 	
-	/*
+	
 	if(typeof(current_date) != undefined && current_date != "")
     {
-        filter = {date:{$lte:current_date}};
-    }*/
+        filter = {"date":{$lte:current_date}};
+    }
 	
 	if(typeof(limit) != undefined && limit != "")
     {
