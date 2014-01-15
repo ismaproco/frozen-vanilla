@@ -248,7 +248,7 @@ function ListController($scope,$http){
         
         
         
-        $http.get('/instacache_load?l='+$scope.limit).success(
+        $http.get('/instacache_load?l='+$scope.limit+'&cd=1999999999').success(
                 function(data, status, headers, config) {
                         $scope.pcount += 1;
                         $scope.instaList = $scope.instaList.concat( data);
