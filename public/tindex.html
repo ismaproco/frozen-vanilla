@@ -168,18 +168,12 @@ border-radius: 10px; /* future proofing */
         
         <script type="text/ng-template" id="myModalContent.html">
             <div class="modal-header">
-                <h3>I'm a modal!</h3>
+                <h3>{{$scope.selectedElement.user_name}}</h3>
             </div>
             <div class="modal-body">
-                <ul>
-                    <li ng-repeat="item in items">
-                        <a ng-click="selected.item = item">{{ item }}</a>
-                    </li>
-                </ul>
-                Selected: <b>{{ selected.item }}</b>
+                <img src="{{ $scope.selectedElement.image_standard_resolution }}" />
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="ok()">OK</button>
                 <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
             </div>
         </script>
@@ -210,7 +204,7 @@ border-radius: 10px; /* future proofing */
                                     
                                 </div>
                             </div>
-                            <div id="rank-container" ng-click="open()">
+                            <div id="rank-container" ng-click="$scope.selectedElement = element;open()">
                             </div>
                         </div>
                     </div>
@@ -280,7 +274,7 @@ function ListController($scope,$http, $modal, $log){
         /*Modal*/
         
         
-          $scope.items = ['item1', 'item2', 'item3'];
+          $scope.selectedElement = null;
 
   $scope.open = function () {
 
