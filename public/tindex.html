@@ -158,12 +158,31 @@ border-radius: 10px; /* future proofing */
   
   
   </style>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <div ng-app="tpui" ng-controller="ListController" class="main-view">
         
-        
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3>I'm a modal!</h3>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li ng-repeat="item in items">
+                        <a ng-click="selected.item = item">{{ item }}</a>
+                    </li>
+                </ul>
+                Selected: <b>{{ selected.item }}</b>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
         
         
         
@@ -179,7 +198,7 @@ border-radius: 10px; /* future proofing */
                         <div class="outer-info">
                             <!-- This should be user information container -->
                             <div id="user-container">
-                                <div id="user-image" style="background-image:url('{{element.user_profile_picture}}')">
+                                <div id="user-image" style="background-image:url('{{element.user_profile_picture}}')" onclick="">
                                 </div>
                                 <div id="user-name">
                                     <div class="username-container"><a href="//instagram.com/{{element.user_name}}" target="blank">{{element.user_name}}</a>
@@ -200,7 +219,7 @@ border-radius: 10px; /* future proofing */
         
 </div>
 <script type="text/javascript">
-var app = angular.module("tpui", ['ngResource']);
+var app = angular.module("tpui", ['ngResource','ui.bootstrap']);
 
 app.directive('ngEnter', function () {
     return function (scope, element, attrs) {
@@ -257,13 +276,56 @@ function ListController($scope,$http){
         
         
         
+        /*Modal*/
         
         
+          $scope.items = ['item1', 'item2', 'item3'];
         
+          $scope.open = function () {
         
+            var modalInstance = $modal.open({
+              templateUrl: 'myModalContent.html',
+              controller: ModalInstanceCtrl,
+              resolve: {
+                items: function () {
+                  return $scope.items;
+                }
+              }
+            });
+        
+            modalInstance.result.then(function (selectedItem) {
+              $scope.selected = selectedItem;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+          };
+        };
+        
+        // Please note that $modalInstance represents a modal window (instance) dependency.
+        // It is not the same as the $modal service used above.
+        
+        var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+        
+          $scope.items = items;
+          $scope.selected = {
+            item: $scope.items[0]
+          };
+        
+          $scope.ok = function () {
+            $modalInstance.close($scope.selected.item);
+          };
+        
+          $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+          };
+        
+        /*Modal*/
 }
 
-
+function openPage(link)
+{
+    location.href = link;
+}
 
 
 
