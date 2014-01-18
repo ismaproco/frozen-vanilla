@@ -252,9 +252,10 @@ function ListController($scope,$http, $modal, $log){
         
         $scope.loadImagesPaginating = function(ev) {
           //if (ev.which==13)
-            $http.get('/instacache_load?l='+$scope.limit +'&cd='+ $scope.instaList.pop().date ).success(
+            $http.get('/instacache_load?l='+$scope.limit +'&cd='+ $scope.instaList[$scope.instaList.length - 1].date ).success(
                 function(data, status, headers, config) {
                         $scope.pcount += 1;
+                        $scope.instaList.pop();
                         $scope.instaList = $scope.instaList.concat( data);
                 });
         }
