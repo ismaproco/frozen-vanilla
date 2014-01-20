@@ -1,2 +1,21 @@
+01/20/2013
+=============
+
+This is going to be the dev branch so we can test and share our code, at the momento we comfortable with it, it must be publish to the heroku "production" environment with the command
+
+git remote add github git@github.com:ismaproco/frozen-vanilla.git
+git remote add heroku git@heroku.com:frozenvanilla.git
+
+git push heroku
+
+Disclaimer: 
+
+- I created the "heroku/frozenvanilla" application, "japan-ko" is now depracated and should not be used (This is a personal reminder)
+- PlasticBliss was added as collaborator for the "heroku/frozenvanilla"'s app
+
+
+PD: Keep Coding!
+
 ---
 Moved from instacache
+
