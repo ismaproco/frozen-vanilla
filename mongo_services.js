@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var conf = require('./conf');
 
 var model;
+var modelCategories;
+var modelParameters;
 
 function ConnectionManager() {}
 
@@ -11,16 +13,51 @@ ConnectionManager.prototype.init = function() {
 	mongoose.connection.once('connected',function(){
 		//CreateModelProcessedInternetItemCollection();
 		CreateModelInstagramPost();
+		CreateModelCategories();
+		CreateModelParameters();
 	});
 	
 };
+
+
+ConnectionManager.prototype.test = function() {
+	if( mongoose.connection.readyState == 0)
+		db = mongoose.connect(conf.MONGO_URL);
+
+	var category = {
+	    user_id:"1",
+	    instagram_id:"String",
+	    date:"Lilo",
+	    index:1,
+	    votes:3,
+	};
+	
+	//create new model
+	var p = new modelCategories(category);
+
+	//save model to MongoDB
+	p.save(function (err) {
+	  if (err) {
+			console.log("/*======ERROR=======*/");
+			console.log("Categories Save ERROR " + err);
+			return err;
+	  }
+	  else {
+		console.log("/*=============*/");
+		console.log("Categories Save COMPLETE");
+	  }
+	});
+	
+};
+
+
 
 ConnectionManager.prototype.saveInstagram = function(req,res) {
   if( mongoose.connection.readyState == 0)
 		db = mongoose.connect(conf.MONGO_URL);
 
-	
-	console.log("Connected to database");
+	console.log("/*=============*/");
+	console.log("|| ConnectionManager.prototype.saveInstagram ||");
 	console.log("/*=============*/");
 	
 	var obj = {
@@ -46,7 +83,8 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 		db = mongoose.connect(conf.MONGO_URL);
 
 	
-	console.log("Connected to database");
+	console.log("/*=============*/");
+	console.log("|| ConnectionManager.prototype.loadInstagram ||");
 	console.log("/*=============*/");
 	
 	var limit = req.param("l");
@@ -83,7 +121,8 @@ ConnectionManager.prototype.getElements = function(res,filter) {
 		db = mongoose.connect(conf.MONGO_URL);
 
 	
-	console.log("Connected to database");
+	console.log("/*=============*/");
+	console.log("|| ConnectionManager.prototype.getElements ||");
 	console.log("/*=============*/");
 	
 	//{email:"jpgarbora@gmail.com"}
@@ -91,6 +130,8 @@ ConnectionManager.prototype.getElements = function(res,filter) {
 	model.find(filter, function(err, doc) {
 		mongoose.connection.close()
 		if (err) {
+			console.log("-> ERROR");
+			console.log("|| ConnectionManager.prototype.getElements/->"+err);
 			return err
 		}
 		else {
@@ -114,7 +155,8 @@ function Connect()
 		db = mongoose.connect(conf.MONGO_URL);
 
 	mongoose.connection.once('connected',function(){
-		console.log("Connected to database");
+		console.log("/*=============*/");
+		console.log("|| Connect ||");
 		console.log("/*=============*/");
 		
 		model = CreateModelProcessedInternetItemCollection();
@@ -155,7 +197,7 @@ function in_array(array, id) {
 
 function CreateModelInstagramPost()
 {
-    //create schema for instagram weapper
+    //create schema for instagram wrapper
 	var instagram_post = new mongoose.Schema({
 	    instagram_id: String,
 	    link: String,
@@ -173,6 +215,37 @@ function CreateModelInstagramPost()
 	
 	model =  db.model("instagram_post", instagram_post);
 }
+
+
+function CreateModelCategories()
+{
+    //create schema for Categories wrapper
+	var categories = new mongoose.Schema({
+	    user_id:String,
+	    instagram_id:String,
+	    date:String,
+	    index:Number,
+	    votes:Number,
+	});
+	
+	modelCategories =  db.model("categories", categories);
+}
+
+function CreateModelParameters()
+{
+    //create schema for Categories wrapper
+	var parameters = new mongoose.Schema({
+	    param_id:String,
+	    father_id:String,
+	    value:String,
+	    type:String,
+	});
+	
+	modelParameters =  db.model("parameters", parameters);
+}
+
+
+
 
 function saveInstagramLink(model, instagram_post)
 {
@@ -214,6 +287,8 @@ function loadInstagramLink(model, filter, res, nlimit,page_num)
     model.find(filter,null,{sort:{date:-1},limit:nlimit,skip:elem_skip}, function(err, doc) {
                 mongoose.connection.close()
                 if (err) {
+	                	console.log("-> ERROR");
+						console.log("|| loadInstagramLink /->"+err);
                         return err
                 }
                 else {
@@ -258,7 +333,7 @@ function saveProcessedInternetItem(model, ProcessedInternetItem)
 	p.save(function (err) {
 	  if (err) {
 			console.log("/*======ERROR=======*/");
-			console.log("processedInternetItem saved " + err);
+			console.log("processedInternetItem not saved " + err);
 			return err;
 	  }
 	  else {

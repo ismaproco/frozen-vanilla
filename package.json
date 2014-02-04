@@ -1,5 +1,5 @@
 {
-  "name": "node-js-sample",
+  "name": "frozenvanilla",
   "version": "0.0.3",
   "description": "a sample node.js app for heroku",
   "main": "web.js",
@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "express": "~3.3.4",
-    "mongoose":"3.8.x",
-    "nodetime":"0.8.x"
+    "mongoose": "3.8.x",
+    "nodetime": "0.8.x"
   },
   "engines": {
     "node": "0.10.x",
@@ -24,5 +24,9 @@
     "heroku"
   ],
   "author": "@ismapro",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/heroku/node-js-sample/issues"
+  },
+  "homepage": "https://github.com/heroku/node-js-sample"
 }

@@ -32,6 +32,16 @@ app.get('/instacache_load',function(req,res){
     cm.loadInstagram(req,res);
 });
 
+app.get('/test',function(req,res){
+    cm.test();
+    res.end();
+});
+
+app.get('/r/*',function(req,res){
+    res.write(req.path.split("/")[2]);
+    res.end();
+});
+
 
 var port = process.env.PORT || 5000;
 
