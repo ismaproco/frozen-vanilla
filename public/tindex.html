@@ -168,10 +168,10 @@ border-radius: 10px; /* future proofing */
         
         <script type="text/ng-template" id="myModalContent.html">
             <div class="modal-header">
-                <h3>{{$scope.selectedElement.user_name}}</h3>
+                <h3>User:{{selectedElement.user_name}}</h3>
             </div>
             <div class="modal-body">
-                <img src="{{ $scope.selectedElement.image_standard_resolution }}" />
+                <img src="{{ selectedElement.image_standard_resolution }}" width="100%" />
             </div>
             <div class="modal-footer">
                 <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
@@ -204,7 +204,7 @@ border-radius: 10px; /* future proofing */
                                     
                                 </div>
                             </div>
-                            <div id="rank-container" ng-click="$scope.selectedElement = element;open()">
+                            <div id="rank-container" ng-click="open(element.instagram_id,element.image_standard_resolution,element.user_name)">
                             </div>
                         </div>
                     </div>
@@ -214,6 +214,7 @@ border-radius: 10px; /* future proofing */
         
 </div>
 <script type="text/javascript">
+
 var app = angular.module("tpui", ['ngResource','ui.bootstrap']);
 
 app.directive('ngEnter', function () {
@@ -275,16 +276,20 @@ function ListController($scope,$http, $modal, $log){
         /*Modal*/
         
         
-          $scope.selectedElement = null;
+          
 
-  $scope.open = function () {
+  $scope.open = function (id, imageUrl, username) {
+    $scope.selectedElement = {};
+    $scope.selectedElement.instagram_id=id;
+    $scope.selectedElement.image_standard_resolution=imageUrl;
+    $scope.selectedElement.user_name=username;
 
     var modalInstance = $modal.open({
       templateUrl: 'myModalContent.html',
       controller: ModalInstanceCtrl,
       resolve: {
-        items: function () {
-          return $scope.items;
+        selectedElement: function(){
+          return $scope.selectedElement;
         }
       }
     });
@@ -300,15 +305,16 @@ function ListController($scope,$http, $modal, $log){
 // Please note that $modalInstance represents a modal window (instance) dependency.
 // It is not the same as the $modal service used above.
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+var ModalInstanceCtrl = function ($scope, $modalInstance, selectedElement) {
 
-  $scope.items = items;
-  $scope.selected = {
-    
-  };
+  //$scope.items = items;
+  $scope.selectedElement = selectedElement;
+
+  alert($scope.selectedElement.user_name);
+
 
   $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
+    //$modalInstance.close($scope.selected.item);
   };
 
   $scope.cancel = function () {
