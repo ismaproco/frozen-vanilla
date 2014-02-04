@@ -1,3 +1,18 @@
+02/03/2013
+=============
+- fixed the modal information loader
+- Added the category loader
+
+TODO
+
+- Create CRUD service operations for the instacaches
+- Load categories per User for the instacaches
+- Save from the categories per instacache
+- Load instagram photos per categorie
+
+
+
+
 01/20/2013
 =============
 
