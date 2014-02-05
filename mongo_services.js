@@ -4,6 +4,7 @@ var conf = require('./conf');
 var model;
 var modelCategories;
 var modelParameters;
+var modelCategoriesUser;
 
 function ConnectionManager() {}
 
@@ -15,6 +16,7 @@ ConnectionManager.prototype.init = function() {
 		CreateModelInstagramPost();
 		CreateModelCategories();
 		CreateModelParameters();
+		CreateModelCategoriesUser();
 	});
 	
 };
@@ -50,6 +52,37 @@ ConnectionManager.prototype.test = function() {
 	
 };
 
+ConnectionManager.prototype.testCategoriesUser = function() {
+	if( mongoose.connection.readyState == 0)
+		db = mongoose.connect(conf.MONGO_URL);
+
+	var categoriesUser = {
+	    user_id:"1",
+	    category_name:"Cars",
+	    date:Date.now()+"",
+	    votes:0,
+	};
+	
+	//create new model
+	var p = new modelCategoriesUser(categoriesUser);
+
+	//save model to MongoDB
+	p.save(function (err) {
+	  if (err) {
+			console.log("/*======ERROR=======*/");
+			console.log("CategoriesUser Save ERROR " + err);
+			return err;
+	   }
+	  else {
+		console.log("/*=============*/");
+		console.log("CategoriesUser Save COMPLETE");
+	  }
+	});
+	
+};
+
+
+
 
 
 ConnectionManager.prototype.saveInstagram = function(req,res) {
@@ -77,6 +110,34 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
 	
 	saveInstagramLink(model, obj);
 };
+
+
+ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
+  if( mongoose.connection.readyState == 0)
+		db = mongoose.connect(conf.MONGO_URL);
+
+	console.log("/*=============*/");
+	console.log("|| ConnectionManager.prototype.saveCategoriesUser ||");
+	console.log("/*=============*/");
+	
+	var obj = {
+	    user_id:req.param('user_id'),
+	    category_name:req.param('category_name'),
+	    date:Date.now()+"",
+	    votes:0,
+	};
+	
+	if(typeof(obj.user_id ) != "undefined" && typeof(obj.category_name) != "undefined")
+	{
+		saveCategoryUser(modelCategoriesUser, obj);
+	}else
+	{
+		return "0";
+	}
+
+	return "ok " +obj.user_id+ " | " + obj.category_name;
+};
+
 
 ConnectionManager.prototype.loadInstagram = function(req,res) {
   if( mongoose.connection.readyState == 0)
@@ -112,6 +173,38 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
     }
 	
 };
+
+
+ConnectionManager.prototype.loadCategoriesUser = function(req,res) {
+  if( mongoose.connection.readyState == 0)
+		db = mongoose.connect(conf.MONGO_URL);
+
+	
+	console.log("/*=============*/");
+	console.log("|| ConnectionManager.prototype.loadCategoriesUser ||");
+	console.log("/*=============*/");
+	
+	var user_id = req.param("ui");
+	
+	console.log("ui: " + user_id);
+	
+	var filter = {
+	  
+	};
+
+	if(typeof(user_id) != "undefined")
+	{
+		var filter = {
+	    	"user_id":user_id
+		};
+	}
+	
+	loadCategoriesUser(modelCategoriesUser, filter,res);
+    
+};
+
+
+
 
 
 
@@ -245,6 +338,20 @@ function CreateModelParameters()
 }
 
 
+function CreateModelCategoriesUser()
+{
+    //create schema for Categories wrapper
+	var CategoriesUser = new mongoose.Schema({
+	    user_id:String,
+	    category_name:String,
+	    date:String,
+	    votes:Number,
+	});
+	
+	modelCategoriesUser =  db.model("categoriesUser", CategoriesUser);
+}
+
+
 
 
 function saveInstagramLink(model, instagram_post)
@@ -266,6 +373,27 @@ function saveInstagramLink(model, instagram_post)
 	});
 }
 
+function saveCategoryUser(model, categoryUser)
+{
+    //create new model
+	var p = new model(categoryUser);
+
+	//save model to MongoDB
+	p.save(function (err) {
+	  if (err) {
+			console.log("/*======ERROR=======*/");
+			console.log("saveCategoryUser ERROR " + err);
+			return err;
+	  }
+	  else {
+		console.log("/*=============*/");
+		console.log("saveCategoryUser saved");
+	  }
+	});
+}
+
+
+
 function loadInstagramLink(model, filter, res, nlimit,page_num)
 {
     
@@ -285,7 +413,7 @@ function loadInstagramLink(model, filter, res, nlimit,page_num)
     var elem_skip = page * nlimit;
     
     model.find(filter,null,{sort:{date:-1},limit:nlimit,skip:elem_skip}, function(err, doc) {
-                mongoose.connection.close()
+                
                 if (err) {
 	                	console.log("-> ERROR");
 						console.log("|| loadInstagramLink /->"+err);
@@ -300,6 +428,25 @@ function loadInstagramLink(model, filter, res, nlimit,page_num)
         });
 }
 
+
+function loadCategoriesUser(model, filter, res)
+{
+    
+	model.find(filter,null,{sort:{date:-1}}, function(err, doc) {
+                
+                if (err) {
+	                	console.log("-> ERROR");
+						console.log("|| loadCategoriesUser /->"+err);
+                        return err
+                }
+                else {
+                          res.write(JSON.stringify(doc));
+                          res.end();
+                
+                        //console.log("elemento:-> " + conf.MONGO_URL);
+                }
+        });
+}
 
 
 function CreateModelProcessedInternetItemCollection()

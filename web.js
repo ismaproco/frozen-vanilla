@@ -33,9 +33,20 @@ app.get('/instacache_load',function(req,res){
 });
 
 app.get('/test',function(req,res){
-    cm.test();
+    cm.testCategoriesUser();
     res.end();
 });
+
+app.get('/saveCategoriesUser',function(req,res){
+    var result = cm.saveCategoriesUser(req,res);
+    res.write(result);
+    res.end();
+});
+
+app.get('/loadCategoriesUser',function(req,res){
+    cm.loadCategoriesUser(req,res);
+});
+
 
 app.get('/r/*',function(req,res){
     res.write(req.path.split("/")[2]);
