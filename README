@@ -1,4 +1,25 @@
-02/03/2013
+02/04/2014
+=============
+- Added methods to save/load Categories per User
+
+Save
+-----
+- parameters can be send via GET or POST
+
+/saveCategoriesUser?user_id=2&category_name=boobs
+
+Load
+-----
+- parameters can be send via GET or POST
+*ui: is the user_id if is not sended loads all categories
+/loadCategoriesUser?ui=1
+
+
+*iSmA :)
+
+
+
+02/03/2014
 =============
 - fixed the modal information loader
 - Added the category loader
@@ -6,14 +27,15 @@
 TODO
 
 - Create CRUD service operations for the instacaches
-- Load categories per User for the instacaches
+- Save/Load categories per User for the instacaches (COMPLETED)
 - Save from the categories per instacache
-- Load instagram photos per categorie
+- Load instagram photos per categories
+- Update UI
 
 
 
 
-01/20/2013
+01/20/2014
 =============
 
 This is going to be the dev branch so we can test and share our code, at the momento we comfortable with it, it must be publish to the heroku "production" environment with the command
