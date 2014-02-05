@@ -22,6 +22,7 @@ ConnectionManager.prototype.init = function() {
 };
 
 
+
 ConnectionManager.prototype.test = function() {
 	if( mongoose.connection.readyState == 0)
 		db = mongoose.connect(conf.MONGO_URL);

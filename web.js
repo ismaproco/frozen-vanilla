@@ -11,10 +11,6 @@ var app = express();
 var cm = new mongo();
 cm.init();
 
-
-
-
-
 app.use(express.logger());
 app.use(express.static(__dirname + '/public'));
 
