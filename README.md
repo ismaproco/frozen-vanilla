@@ -4,15 +4,19 @@
 
 Save
 -----
+
 - parameters can be send via GET or POST
-
+```
 /saveCategoriesUser?user_id=2&category_name=boobs
-
+```
 Load
 -----
+
 - parameters can be send via GET or POST
-*ui: is the user_id if is not sended loads all categories
+- ui: is the user_id if is not sended loads all categories
+```
 /loadCategoriesUser?ui=1
+```
 
 
 *iSmA :)
