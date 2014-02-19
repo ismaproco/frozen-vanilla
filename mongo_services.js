@@ -113,6 +113,10 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
 };
 
 
+
+
+
+
 ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
   if( mongoose.connection.readyState == 0)
 		db = mongoose.connect(conf.MONGO_URL);
@@ -139,6 +143,36 @@ ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
 	return "ok " +obj.user_id+ " | " + obj.category_name;
 };
 
+//===========================================
+//Crud Operations with categories and Instas
+
+ConnectionManager.prototype.updateInstaCategory = function(req,res) {
+  if( mongoose.connection.readyState == 0)
+		db = mongoose.connect(conf.MONGO_URL);
+
+	console.log("/*=============*/");
+	console.log("|| ConnectionManager.prototype.saveCategoriesUser ||");
+	console.log("/*=============*/");
+	
+	var obj = {
+	    user_id:req.param('user_id'),
+	    category_name:req.param('category_name'),
+	    date:Date.now()+"",
+	    votes:0,
+	};
+	
+	if(typeof(obj.user_id ) != "undefined" && typeof(obj.category_name) != "undefined")
+	{
+		saveCategoryUser(modelCategoriesUser, obj);
+	}else
+	{
+		return "0";
+	}
+
+	return "ok " +obj.user_id+ " | " + obj.category_name;
+};
+
+//===========================================
 
 ConnectionManager.prototype.loadInstagram = function(req,res) {
   if( mongoose.connection.readyState == 0)

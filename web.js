@@ -33,6 +33,18 @@ app.get('/test',function(req,res){
     res.end();
 });
 
+//Instagrams per Categorie
+app.get('/updateInstaCategory',function(req,res){
+    var result = cm.updateInstaCategory(req,res);
+    res.write(result);
+    res.end();
+});
+
+app.get('/removeInstaCategory',function(req,res){
+    cm.removeInstaCategory(req,res);
+});
+
+//Categories per User
 app.get('/saveCategoriesUser',function(req,res){
     var result = cm.saveCategoriesUser(req,res);
     res.write(result);
