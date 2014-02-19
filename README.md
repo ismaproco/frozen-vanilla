@@ -1,3 +1,15 @@
+02/18/2014
+=============
+- Implemented new data model with a improved architecture.
+- Created the folder and the first test file for the application
+
+ToDo
+- Is necessary to implement all of the changes of the model on the mongo_services file.
+
+*iSmA :)
+
+
+
 02/04/2014
 =============
 - Added methods to save/load Categories per User
