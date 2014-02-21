@@ -1,6 +1,9 @@
 //Model Facade
 //Module in charge of the instantiation of the model classes
 var mongoose = require('mongoose');
+var mongoose2 = require('mongoose');
+var mongoose3 = require('mongoose');
+var mongoose4 = require('mongoose');
 
 var modelInstacache = require('./modelInstacache');
 var modelCategories = require('./modelCategories');
@@ -26,9 +29,9 @@ var arr_names = [
 function loadMapper()
 {
 	mapper[arr_names[0]] = new modelInstacache(mongoose);
-	mapper[arr_names[1]] = new modelCategories(mongoose);
-	mapper[arr_names[2]] = new modelParameters(mongoose);
-	mapper[arr_names[3]] = new modelCategoriesUser(mongoose);
+	mapper[arr_names[1]] = new modelCategories(mongoose2);
+	mapper[arr_names[2]] = new modelParameters(mongoose3);
+	mapper[arr_names[3]] = new modelCategoriesUser(mongoose4);
 }
 
 function operation(modelname,operation,obj)

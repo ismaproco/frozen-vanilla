@@ -1,7 +1,6 @@
 var mongoController = require('../mongocontroller/ModelFacade');
 
-var mc = new mongoController();
-mc.loadMapper();
+
 
 
 var obj = {};

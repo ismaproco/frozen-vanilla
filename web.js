@@ -28,18 +28,6 @@ app.get('/instacache_load',function(req,res){
     cm.loadInstagram(req,res);
 });
 
-app.get('/test',function(req,res){
-    cm.testCategoriesUser();
-    res.end();
-});
-
-//Instagrams per Categorie
-app.get('/updateInstaCategory',function(req,res){
-    var result = cm.updateInstaCategory(req,res);
-    res.write(result);
-    res.end();
-});
-
 app.get('/removeInstaCategory',function(req,res){
     cm.removeInstaCategory(req,res);
 });
