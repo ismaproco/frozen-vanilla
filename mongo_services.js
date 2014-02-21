@@ -1,10 +1,12 @@
 var mongoose = require('mongoose');
 var conf = require('./conf');
+var mongoController = require('./mongocontroller/ModelFacade');
 
 var model;
 var modelCategories;
 var modelParameters;
 var modelCategoriesUser;
+var mc = {};
 
 function ConnectionManager() {}
 
@@ -13,10 +15,15 @@ ConnectionManager.prototype.init = function() {
 
 	mongoose.connection.once('connected',function(){
 		//CreateModelProcessedInternetItemCollection();
-		CreateModelInstagramPost();
-		CreateModelCategories();
-		CreateModelParameters();
-		CreateModelCategoriesUser();
+		// CreateModelInstagramPost();
+		// CreateModelCategories();
+		// CreateModelParameters();
+		// CreateModelCategoriesUser();
+
+		mc = new mongoController();
+		mc.loadMapper();
+
+
 	});
 	
 };
@@ -87,13 +94,7 @@ ConnectionManager.prototype.testCategoriesUser = function() {
 
 
 ConnectionManager.prototype.saveInstagram = function(req,res) {
-  if( mongoose.connection.readyState == 0)
-		db = mongoose.connect(conf.MONGO_URL);
 
-	console.log("/*=============*/");
-	console.log("|| ConnectionManager.prototype.saveInstagram ||");
-	console.log("/*=============*/");
-	
 	var obj = {
 	    link: req.param('link'),
 	  user_full_name: req.param('user_full_name'),
@@ -108,8 +109,9 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
         instagram_id:req.param('id'),
         text:req.param('text'),
 	};
-	
-	saveInstagramLink(model, obj);
+
+
+	mc.operation(mc.names[0],"save",obj);
 };
 
 

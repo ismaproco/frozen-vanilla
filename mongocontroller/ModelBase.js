@@ -11,13 +11,14 @@ function ModelBase(){};
 
 ModelBase.prototype.init = function(mongoose, _entityName, documentElement)
 {
-	console.log("init " + this.entityName + " " + documentElement);
+	
 	console.log("MONGO_URL "+ conf.MONGO_URL);
 	if( mongoose.connection.readyState == 0)
 		db = mongoose.connect(conf.MONGO_URL);
 
 	this.entityName = _entityName;
 	this.documentElement = documentElement;
+	console.log("init " + this.entityName + " " + documentElement);
 	this.model = db.model(this.entityName, this.documentElement);
 };
 
