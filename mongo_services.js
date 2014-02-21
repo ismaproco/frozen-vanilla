@@ -110,7 +110,6 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
         text:req.param('text'),
 	};
 
-
 	mc.operation(mc.names[0],"save",obj);
 };
 
@@ -120,12 +119,9 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
 
 
 ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
-  if( mongoose.connection.readyState == 0)
-		db = mongoose.connect(conf.MONGO_URL);
-
-	console.log("/*=============*/");
+  
 	console.log("|| ConnectionManager.prototype.saveCategoriesUser ||");
-	console.log("/*=============*/");
+	
 	
 	var obj = {
 	    user_id:req.param('user_id'),
@@ -136,7 +132,8 @@ ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
 	
 	if(typeof(obj.user_id ) != "undefined" && typeof(obj.category_name) != "undefined")
 	{
-		saveCategoryUser(modelCategoriesUser, obj);
+		mc.operation("modelCategoriesUser","save",obj);
+		//saveCategoryUser(modelCategoriesUser, obj);
 	}else
 	{
 		return "0";
@@ -180,10 +177,8 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
   if( mongoose.connection.readyState == 0)
 		db = mongoose.connect(conf.MONGO_URL);
 
-	
-	console.log("/*=============*/");
 	console.log("|| ConnectionManager.prototype.loadInstagram ||");
-	console.log("/*=============*/");
+
 	
 	var limit = req.param("l");
 	var page = req.param("p");
@@ -203,10 +198,42 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	
 	if(typeof(limit) != undefined && limit != "")
     {
-        loadInstagramLink(model, filter,res,limit,page);
+
+    	if (typeof(limit) == "undefined" || limit == "")
+	    {    limit = 100
+	    }else
+	    {
+	        limit = parseInt(limit)    
+	    };
+	    
+	    if (typeof(page) == "undefined" || page == "")
+	    {    page = 0}
+	    else
+	    {
+	        page = parseInt(page)    
+	    };
+	    
+	    var elem_skip = page * limit;
+
+
+		var obj = {
+			filter:filter,
+			res:res,
+			params:{sort:{date:-1},limit:limit,skip:elem_skip}
+		}
+
+		mc.operation[0]["get"](obj);
+        //loadInstagramLink(model, filter,res,limit,page);
     }else
     {
-	    loadInstagramLink(model, filter,res);
+    	var obj = {
+			filter:filter,
+			res:res,
+			params:{sort:{date:-1}}
+		}
+
+		mc.operation[0]["get"](obj);
+	    //loadInstagramLink(model, filter,res);
     }
 	
 };

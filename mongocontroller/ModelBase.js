@@ -46,7 +46,6 @@ ModelBase.prototype.save = function(obj)
 ModelBase.prototype.get = function(obj)
 {
 	//obj.params = {sort:{_id:-1},limit:1};
-	//obj.elemSkip;
 	//obj.filter;
 	//obj.res
 
