@@ -1,0 +1,386 @@
+<!doctype html>
+<meta charset="utf-8">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Categories</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+  <style>
+  
+  .main-view
+  {
+      margin-left:auto;
+      margin-right:auto;
+      width:1000px;
+  }
+  
+  .inner_div
+  {
+     position:relative;top:-40px;background-color:#f7f7f7;opacity:0.8; 
+  }
+  
+  .left_div
+  {
+    float:left;
+    height:150px;
+  }
+  
+  
+  .list-icon {
+        background-image: url(/img/send.png);
+        background-repeat:no-repeat;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-decoration: none !important;
+        margin-right: 5px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .grid-icon {
+        background-image: url(/img/edit.png);
+        background-repeat:no-repeat;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-decoration: none !important;
+        margin-right: 5px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .vertical_bar
+    {
+        height: 80px;
+        position: absolute;
+        width: 34px;
+        right: 30px;
+        top: 10px;
+    }
+
+  
+  html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, pre, form, fieldset, table, th, td { margin: 0; padding: 0; } 
+body
+{
+    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+.post
+{
+    width:650px;
+    position:relative;
+    height:330px;
+    margin-bottom:10px;
+    background-color: #A2B0C2 ;
+    
+}
+
+.outer-image
+{
+    border: 1px solid #fff;
+    float:left;
+    width:306px;
+    height:306px;
+    position:absolute;
+    margin-left:10px;
+    margin-top:10px;
+}
+
+#image-container
+{
+    width:100%;
+    height:100%;
+    
+    position:relative;
+}
+
+.outer-info
+{
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    float:right;
+    width:340px;
+    height:306px;
+    margin-right:10px;
+    margin-top:10px;
+    background-color:#F5F5F5;
+    -moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px; /* future proofing */
+-khtml-border-radius: 10px; /* for old Konqueror browsers */
+}
+
+#user-container
+{
+    width:100%;
+    height:150px;
+    top:5px;
+    
+    position:relative;    
+}
+
+#user-image
+{
+    width:50px;
+    height:50px;
+    background-size: 100% 100%;
+    top: 10px;
+    left: 10px;
+    position:absolute; 
+}
+
+#user-name
+{
+    height:100px;
+    margin-left:70px;
+    top:11px;
+    position:relative;
+    
+    width: 200px;
+}
+
+#rank-container
+{
+    width:100%;
+    height:140px;
+    margin-top:10px;
+    
+    position:relative;    
+}
+
+#text-container
+{
+    font-size:0.8em;
+}
+  .cat-header
+  {
+    border: 1px;
+    padding:10px; 
+  }
+
+  .cat-main
+  {
+    padding-left:20px; 
+  }
+
+
+  </style>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<div ng-app="app" ng-controller="Ctrl2">
+      <div>
+        <div class="cat-header">
+          <input type="textbox" id="txtNewCategory" ng-model="category_name" />
+          <input type="button" id="btnAddCategory" value="+" ng-click="saveCategory()"></input>
+        </div>
+        <div class="cat-main">
+          <label ng-repeat="role in roles" style="display:block;">
+            <input type="checkbox" checklist-model="user.roles" checklist-value="role.category_name"> {{role.category_name}} </input><br />
+          </label>
+        </div>
+        <div class="buttons">
+          <input type="button" ng-click="uncheckAll()" value="Uncheck All" />
+          <input type="button" ng-click="removeSelected()" value="Remove Selected" />
+        </div>
+      </div>
+</div>
+<script type="text/javascript">
+/**
+ * Checklist-model
+ * AngularJS directive for list of checkboxes
+ */
+
+angular.module('checklist-model', [])
+.directive('checklistModel', ['$parse', '$compile', function($parse, $compile) {
+  // contains
+  function contains(arr, item) {
+    if (angular.isArray(arr)) {
+      for (var i = 0; i < arr.length; i++) {
+        if (angular.equals(arr[i], item)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // add
+  function add(arr, item) {
+    arr = angular.isArray(arr) ? arr : [];
+    for (var i = 0; i < arr.length; i++) {
+      if (angular.equals(arr[i], item)) {
+        return arr;
+      }
+    }    
+    arr.push(item);
+    return arr;
+  }  
+
+  // remove
+  function remove(arr, item) {
+    if (angular.isArray(arr)) {
+      for (var i = 0; i < arr.length; i++) {
+        if (angular.equals(arr[i], item)) {
+          arr.splice(i, 1);
+          break;
+        }
+      }
+    }
+    return arr;
+  }
+
+  // http://stackoverflow.com/a/19228302/1458162
+  function postLinkFn(scope, elem, attrs) {
+    // compile with `ng-model` pointing to `checked`
+    $compile(elem)(scope);
+
+    // getter / setter for original model
+    var getter = $parse(attrs.checklistModel);
+    var setter = getter.assign;
+
+    // value added to list
+    var value = $parse(attrs.checklistValue)(scope.$parent);
+
+    // watch UI checked change
+    scope.$watch('checked', function(newValue, oldValue) {
+      if (newValue === oldValue) { 
+        return;
+      } 
+      var current = getter(scope.$parent);
+      if (newValue === true) {
+        setter(scope.$parent, add(current, value));
+      } else {
+        setter(scope.$parent, remove(current, value));
+      }
+    });
+
+    // watch original model change
+    scope.$parent.$watch(attrs.checklistModel, function(newArr, oldArr) {
+      scope.checked = contains(newArr, value);
+    }, true);
+  }
+
+  return {
+    restrict: 'A',
+    priority: 1000,
+    terminal: true,
+    scope: true,
+    compile: function(tElement, tAttrs) {
+      if (tElement[0].tagName !== 'INPUT' || !tElement.attr('type', 'checkbox')) {
+        throw 'checklist-model should be applied to `input[type="checkbox"]`.';
+      }
+
+      if (!tAttrs.checklistValue) {
+        throw 'You should provide `checklist-value`.';
+      }
+
+      // exclude recursion
+      tElement.removeAttr('checklist-model');
+      
+      // local scope var storing individual checkbox model
+      tElement.attr('ng-model', 'checked');
+
+      return postLinkFn;
+    }
+  };
+}]);
+</script>
+<script type="text/javascript">
+  var app = angular.module("app", ["checklist-model"]);
+  
+  app.controller('Ctrl2', function($scope,$http) {
+    $scope.roles = [];
+    $scope.category_name = "";
+    $scope.currentUser = "global";
+    $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+            function(data, status, headers, config) {
+                    $scope.roles = $scope.roles.concat(data);
+            });
+
+    $scope.user = {
+      //roles: [2, 4]
+    };
+    $scope.checkAll = function() {
+      $scope.user.roles = $scope.roles.map(function(item) { return item.id; });
+    };
+    $scope.uncheckAll = function() {
+      $scope.user.roles = [];
+    };
+    $scope.checkFirst = function() {
+      $scope.user.roles.splice(0, $scope.user.roles.length); 
+      $scope.user.roles.push(1);
+    };
+
+    $scope.saveCategory = function() {
+      
+
+      if( $scope.category_name == "")
+      {
+        alert("Please include a Name to add");
+        return;
+      }
+
+      $scope.roles = []; //Clear the roles to avoid staking
+
+      $http.get('/saveCategories?user_id='+$scope.currentUser+'&category_name='+$scope.category_name).success(
+        function(data, status, headers, config) {
+                $scope.category_name = "";
+                  $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+        });
+    };
+
+    $scope.saveCategory = function() {
+      
+
+      if( $scope.category_name == "")
+      {
+        alert("Please include a Name to add");
+        return;
+      }
+
+      $scope.roles = []; //Clear the roles to avoid staking
+
+      $http.get('/saveCategories?user_id='+$scope.currentUser+'&category_name='+$scope.category_name).success(
+        function(data, status, headers, config) {
+                $scope.category_name = "";
+                  $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+        });
+    };
+
+
+    $scope.removeSelected = function() {
+      
+      //$scope.roles = []; //Clear the roles to avoid staking
+      var ids = $scope.user.roles.map(function(x){
+        return x;
+      });
+
+      //alert(ids);
+      $http.get('/disableCategories?ids='+ids).success(function(){
+        $scope.roles = [];
+        $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+      });
+    };
+
+
+  });
+
+
+</script>
+</html>
