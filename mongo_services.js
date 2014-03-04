@@ -30,34 +30,13 @@ ConnectionManager.prototype.saveInstagram = function(req,res) {
         date: req.param('date'),
         instagram_id:req.param('id'),
         text:req.param('text'),
+		res:res,
 	};
 
 	mc.operation(mc.names[0],"save",obj);
 };
 
-ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
-  
-	console.log("|| ConnectionManager.prototype.saveCategoriesUser ||");
-	
-	
-	var obj = {
-	    user_id:req.param('user_id'),
-	    category_name:req.param('category_name'),
-	    date:Date.now()+"",
-	    votes:0,
-	};
-	
-	if(typeof(obj.user_id ) != "undefined" && typeof(obj.category_name) != "undefined")
-	{
-		mc.operation("modelCategoriesUser","save",obj);
-		//saveCategoryUser(modelCategoriesUser, obj);
-	}else
-	{
-		return "0";
-	}
 
-	return "ok " +obj.user_id+ " | " + obj.category_name;
-};
 
 
 //===========================================
@@ -126,8 +105,114 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 };
 
 
+//=================================================
+
+ConnectionManager.prototype.loadCategoriesByUser = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.loadCategoriesByUser ||");
+
+	
+	var userId = req.param("u"); // User_id
+	
+	console.log("parameter: u," + userId);
+	
+	var filter = {
+	    
+	};
+	
+	
+	if(!isEmptyOrUndefined(userId))
+    {
+        filter = {"user_id":userId,'enable':true};
+    }
+	
+	
+	var obj = {
+		filter:filter,
+		res:res,
+		params:{sort:{category_name:-1}}
+	}
+
+	mc.operation(mc.names[1],"get",obj);
+    //loadInstagramLink(model, filter,res);
+};
+
+ConnectionManager.prototype.saveCategories = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.saveCategories ||");
+	
+	var obj = {
+        user_id:req.param('user_id'),
+	    category_name:req.param('category_name'),
+	    date:Date.now()+"",
+	    votes:0,
+	    index:0,
+	    enable:true,
+	    res:res,
+	}
+	
+	mc.operation(mc.names[1],"save",obj);
+};
+
+ConnectionManager.prototype.removeCategories = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.saveCategories ||");
+	
+	var obj = {
+        user_id:req.param('user_id'),
+	    category_name:req.param('category_name'),
+	    date:Date.now()+"",
+	    votes:0,
+	    index:0,
+	    res:res,
+	}
+	
+	mc.operation(mc.names[1],"remove",obj);
+};
+
+ConnectionManager.prototype.removeCategories = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.saveCategories ||");
+	
+	var obj = {
+        user_id:req.param('user_id'),
+	    category_name:req.param('category_name'),
+	    date:Date.now()+"",
+	    votes:0,
+	    index:0,
+	    res:res,
+	}
+	
+	mc.operation(mc.names[1],"remove",obj);
+};
+
+ConnectionManager.prototype.disableCategories = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.saveCategories ||");
+	var ids = req.param('ids').split(',');
+	var obj = {
+        filter:{'category_name':{$in:ids}},
+        operation:{enable:false},
+	    res:res,
+	}
+	
+	mc.operation(mc.names[1],"update",obj);
+};
 
 
+
+//=============================================
+
+
+function isEmptyOrUndefined(obj)
+{
+	if(typeof(obj) == "undefined" || obj == "")
+	{
+		return true;
+	}
+
+	return false;
+}
 
 
 
@@ -141,3 +226,6 @@ function in_array(array, id) {
 
 
 module.exports = ConnectionManager;
+
+
+

@@ -12,6 +12,8 @@ function Model(mongoose)
 	//document definition
 	this.documentDefinition = new mongoose.Schema({
 		    user_id:String,
+		    category_id:String,
+		    instagram_id:String,
 		    category_name:String,
 		    date:String,
 		    votes:Number,

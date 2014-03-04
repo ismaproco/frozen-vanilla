@@ -26,20 +26,27 @@ ModelBase.prototype.save = function(obj)
 {
 	var entityName = this.entityName;
 	console.log("save " + entityName);
-	
-	
+
+
 	//create new model
 	var p = new this.model(obj);
 
 	//save model to MongoDB
 	p.save(function (err) {
-	  if (err) {
+		
+		if (err) {
 			console.log(" ERROR -"+ entityName +" "+ err);
 			return err;
-	  }
-	  else {
-		console.log(" Saved - "+ entityName +" _id "+ p._id );
-	  }
+		}
+		else {
+			console.log(" Saved - "+ entityName +" _id "+ p._id );
+		}
+
+		if(obj.hasOwnProperty("res"))
+		{
+			obj.res.end();
+		}
+
 	});
 };
 
@@ -55,14 +62,14 @@ ModelBase.prototype.get = function(obj)
     this.model.find(obj.filter, null, obj.params, function(err, doc) {                
             if (err) {
                 	console.log("-> ERROR");
-					console.log("|| loadInstagramLink /->"+err);
+					console.log("|| GET /->"+err);
                     return err
             }
             else {
             	if(obj.hasOwnProperty("res"))
             	{
             		obj.res.write(JSON.stringify(doc));
-                     obj.res.end();
+                    obj.res.end();
             	}else
             	{
             		var ljson = JSON.stringify(doc);
@@ -105,8 +112,22 @@ ModelBase.prototype.remove = function(obj)
 
 ModelBase.prototype.update = function(obj)
 {
-	console.log("update:Entity - " + this.entityName);
-	console.log("update:Model - " + this.model);
+	this.model.update(obj.filter, obj.operation, { multi: true }, function (err, numberAffected, raw) {
+	  if (err) return handleError(err);
+	  console.log('++++++>The number of updated documents was %d', numberAffected);
+	  console.log('++++++>The raw response from Mongo was ', raw);
+	});
+
+	if(obj.hasOwnProperty("res"))
+	{
+		obj.res.end();
+		console.log("Update ok");
+	}else
+	{
+		console.log("Update ok - no res");
+	}
+
+
 	return "";
 };
 

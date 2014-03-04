@@ -15,6 +15,8 @@ app.use(express.logger());
 app.use(express.static(__dirname + '/public'));
 
 
+
+//START - Instagram Methods
 app.post('/mongo',function(req,res){
     cm.saveInstagram(req,res);
 });
@@ -23,25 +25,43 @@ app.get('/mongo',function(req,res){
     cm.saveInstagram(req,res);
 });
 
-
 app.get('/instacache_load',function(req,res){
     cm.loadInstagram(req,res);
 });
+//END - Instagram Methods
+
 
 app.get('/removeInstaCategory',function(req,res){
     cm.removeInstaCategory(req,res);
 });
 
-//Categories per User
-app.get('/saveCategoriesUser',function(req,res){
-    var result = cm.saveCategoriesUser(req,res);
-    res.write(result);
-    res.end();
+//START Categories Methods
+
+app.get('/saveCategories',function(req,res){
+    cm.saveCategories(req,res);
 });
 
-app.get('/loadCategoriesUser',function(req,res){
-    cm.loadCategoriesUser(req,res);
+app.post('/saveCategories',function(req,res){
+    cm.saveCategories(req,res);
 });
+
+app.get('/loadCategoriesByUser',function(req,res){
+    cm.loadCategoriesByUser(req,res);
+});
+
+app.post('/loadCategoriesByUser',function(req,res){
+    cm.loadCategoriesByUser(req,res);
+});
+
+app.get('/disableCategories',function(req,res){
+    cm.disableCategories(req,res);
+});
+
+app.post('/disableCategories',function(req,res){
+    cm.disableCategories(req,res);
+});
+
+//END Categories Methods
 
 
 app.get('/r/*',function(req,res){
