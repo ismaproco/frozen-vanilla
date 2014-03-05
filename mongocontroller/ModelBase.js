@@ -110,6 +110,30 @@ ModelBase.prototype.remove = function(obj)
 	  });
 };
 
+
+ModelBase.prototype.removeWithFilter = function(obj)
+{
+	console.log("remove:Entity - " + this.entityName);
+	console.log("remove:Model - " + typeof(this.model));
+    var entityName = this.entityName;
+
+    this.model.remove(obj.filter, function(err) {
+		    if (err){console.log("Error Removing "+ entityName)}
+	    	else{	    		
+	    		if(obj.hasOwnProperty("res"))
+	    		{
+	    			obj.res.end();
+	    			console.log("Remove ok");
+	    		}else
+	    		{
+	    			console.log("Remove ok - no res");
+	    		}
+	    	}
+	  });
+};
+
+
+
 ModelBase.prototype.update = function(obj)
 {
 	this.model.update(obj.filter, obj.operation, { multi: true }, function (err, numberAffected, raw) {

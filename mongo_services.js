@@ -173,17 +173,14 @@ ConnectionManager.prototype.removeCategories = function(req,res) {
 ConnectionManager.prototype.removeCategories = function(req,res) {
   
 	console.log("|| ConnectionManager.prototype.saveCategories ||");
-	
+	var cats = req.param('category_name').split(',');
+	console.log("---ca#"+cats);
 	var obj = {
-        user_id:req.param('user_id'),
-	    category_name:req.param('category_name'),
-	    date:Date.now()+"",
-	    votes:0,
-	    index:0,
+	    filter:{'category_name':{$in:cats}},
 	    res:res,
 	}
 	
-	mc.operation(mc.names[1],"remove",obj);
+	mc.operation(mc.names[1],"removeWithFilter",obj);
 };
 
 ConnectionManager.prototype.disableCategories = function(req,res) {
@@ -192,7 +189,6 @@ ConnectionManager.prototype.disableCategories = function(req,res) {
 	var ids = req.param('ids').split(',');
 	var obj = {
         filter:{'category_name':{$in:ids}},
-        operation:{enable:false},
 	    res:res,
 	}
 	

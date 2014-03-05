@@ -61,6 +61,15 @@ app.post('/disableCategories',function(req,res){
     cm.disableCategories(req,res);
 });
 
+app.get('/removeCategories',function(req,res){
+    cm.removeCategories(req,res);
+});
+
+app.post('/removeCategories',function(req,res){
+    cm.removeCategories(req,res);
+});
+
+
 //END Categories Methods
 
 
