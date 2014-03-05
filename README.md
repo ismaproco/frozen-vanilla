@@ -1,3 +1,12 @@
+03/04/2014
+============
+- Implemented the methods to work with the categories
+- Created new page to manage the categories, it also works as reference
+  for the instagram classification
+
+*iSmA :)
+
+
 02/18/2014
 =============
 - Implemented new data model with a improved architecture.
