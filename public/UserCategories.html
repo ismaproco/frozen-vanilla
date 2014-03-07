@@ -182,7 +182,7 @@ border-radius: 10px; /* future proofing */
         </div>
         <div class="cat-main">
           <label ng-repeat="role in roles" style="display:block;">
-            <input type="checkbox" checklist-model="user.roles" checklist-value="role.category_name"> {{role.category_name}} </input><br />
+            <input type="checkbox" checklist-model="user.roles" checklist-value="role._id"> {{role.category_name}} </input><br />
           </label>
         </div>
         <div class="buttons">
@@ -191,107 +191,7 @@ border-radius: 10px; /* future proofing */
         </div>
       </div>
 </div>
-<script type="text/javascript">
-/**
- * Checklist-model
- * AngularJS directive for list of checkboxes
- */
-
-angular.module('checklist-model', [])
-.directive('checklistModel', ['$parse', '$compile', function($parse, $compile) {
-  // contains
-  function contains(arr, item) {
-    if (angular.isArray(arr)) {
-      for (var i = 0; i < arr.length; i++) {
-        if (angular.equals(arr[i], item)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  // add
-  function add(arr, item) {
-    arr = angular.isArray(arr) ? arr : [];
-    for (var i = 0; i < arr.length; i++) {
-      if (angular.equals(arr[i], item)) {
-        return arr;
-      }
-    }    
-    arr.push(item);
-    return arr;
-  }  
-
-  // remove
-  function remove(arr, item) {
-    if (angular.isArray(arr)) {
-      for (var i = 0; i < arr.length; i++) {
-        if (angular.equals(arr[i], item)) {
-          arr.splice(i, 1);
-          break;
-        }
-      }
-    }
-    return arr;
-  }
-
-  // http://stackoverflow.com/a/19228302/1458162
-  function postLinkFn(scope, elem, attrs) {
-    // compile with `ng-model` pointing to `checked`
-    $compile(elem)(scope);
-
-    // getter / setter for original model
-    var getter = $parse(attrs.checklistModel);
-    var setter = getter.assign;
-
-    // value added to list
-    var value = $parse(attrs.checklistValue)(scope.$parent);
-
-    // watch UI checked change
-    scope.$watch('checked', function(newValue, oldValue) {
-      if (newValue === oldValue) { 
-        return;
-      } 
-      var current = getter(scope.$parent);
-      if (newValue === true) {
-        setter(scope.$parent, add(current, value));
-      } else {
-        setter(scope.$parent, remove(current, value));
-      }
-    });
-
-    // watch original model change
-    scope.$parent.$watch(attrs.checklistModel, function(newArr, oldArr) {
-      scope.checked = contains(newArr, value);
-    }, true);
-  }
-
-  return {
-    restrict: 'A',
-    priority: 1000,
-    terminal: true,
-    scope: true,
-    compile: function(tElement, tAttrs) {
-      if (tElement[0].tagName !== 'INPUT' || !tElement.attr('type', 'checkbox')) {
-        throw 'checklist-model should be applied to `input[type="checkbox"]`.';
-      }
-
-      if (!tAttrs.checklistValue) {
-        throw 'You should provide `checklist-value`.';
-      }
-
-      // exclude recursion
-      tElement.removeAttr('checklist-model');
-      
-      // local scope var storing individual checkbox model
-      tElement.attr('ng-model', 'checked');
-
-      return postLinkFn;
-    }
-  };
-}]);
-</script>
+<script type="text/javascript" src="js/checklistmodel.js"></script>
 <script type="text/javascript">
   var app = angular.module("app", ["checklist-model"]);
   
@@ -303,9 +203,9 @@ angular.module('checklist-model', [])
             function(data, status, headers, config) {
                     $scope.roles = $scope.roles.concat(data);
             });
-
+    //Set the current ids to preselect as checked
     $scope.user = {
-      //roles: [2, 4]
+      //roles: ['531a4624dcfb844d40a167ae']
     };
     $scope.checkAll = function() {
       $scope.user.roles = $scope.roles.map(function(item) { return item.id; });
@@ -369,7 +269,7 @@ angular.module('checklist-model', [])
       });
 
       //alert(ids);
-      $http.get('/disableCategories?ids='+ids).success(function(){
+      $http.get('/removeCategories?ids='+ids).success(function(){
         $scope.roles = [];
         $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
                     function(data, status, headers, config) {

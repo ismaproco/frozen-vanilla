@@ -16,6 +16,7 @@ function Model(mongoose)
 		    instagram_id:String,
 		    date:String,
 		    votes:Number,
+		    enable:Boolean
 	});
 	this.mongoose = mongoose;
 	this.init(mongoose,"CategoriesUser",this.documentDefinition);

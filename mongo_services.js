@@ -157,23 +157,7 @@ ConnectionManager.prototype.saveCategories = function(req,res) {
 ConnectionManager.prototype.removeCategories = function(req,res) {
   
 	console.log("|| ConnectionManager.prototype.saveCategories ||");
-	
-	var obj = {
-        user_id:req.param('user_id'),
-	    category_name:req.param('category_name'),
-	    date:Date.now()+"",
-	    votes:0,
-	    index:0,
-	    res:res,
-	}
-	
-	mc.operation(mc.names[1],"remove",obj);
-};
-
-ConnectionManager.prototype.removeCategories = function(req,res) {
-  
-	console.log("|| ConnectionManager.prototype.saveCategories ||");
-	var cats = req.param('category_name').split(',');
+	var cats = req.param('ids').split(',');
 	console.log("---ca#"+cats);
 	var obj = {
 	    filter:{'category_name':{$in:cats}},
@@ -198,6 +182,69 @@ ConnectionManager.prototype.disableCategories = function(req,res) {
 
 
 //=============================================
+
+
+
+/*
+//=============================================
+	START User Categories Methods
+//=============================================
+
+*/
+ConnectionManager.prototype.loadUserCategoriesByInstagram = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.loadUserCategoriesByInstagram ||");
+
+	
+	var instagram_id = req.param("u"); // User_id
+	
+	console.log("parameter: instagram_id (u)," + instagram_id);
+	
+	var filter = {
+	    
+	};
+	
+	
+	if(!isEmptyOrUndefined(instagram_id))
+    {
+        filter = {"instagram_id":instagram_id,'enable':true};
+    }
+	
+	
+	var obj = {
+		filter:filter,
+		res:res,
+		params:{sort:{category_id:-1}}
+	}
+
+	mc.operation(mc.names[3],"get",obj);
+    //loadInstagramLink(model, filter,res);
+};
+
+ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.saveCategoriesUser ||");
+	
+	var obj = 
+	{
+		    user_id:req.param('user_id'),
+		    category_id:req.param('category_id'),
+		    instagram_id:req.param('instagram_id'),
+		    date:Date.now()+"",
+		    votes:0,
+		    enable:true,
+	}
+	
+	mc.operation(mc.names[3],"save",obj);
+};
+
+
+/*
+//=============================================
+	END User Categories Methods
+//=============================================
+
+*/
 
 
 function isEmptyOrUndefined(obj)

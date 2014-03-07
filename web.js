@@ -73,6 +73,22 @@ app.post('/removeCategories',function(req,res){
 //END Categories Methods
 
 
+//START CategoriesUser Methods
+
+app.get('loadCategoriesUserByInstagram',function(req, res){
+    cm.loadUserCategoriesByInstagram(req,res);
+});
+
+app.get('saveCategoriesUser',function(req, res){
+    cm.saveCategoriesUser(req,res);
+});
+
+app.post('saveCategoriesUser',function(req, res){
+    cm.saveCategoriesUser(req,res);
+});
+
+//END CategoriesUser Methods
+
 app.get('/r/*',function(req,res){
     res.write(req.path.split("/")[2]);
     res.end();

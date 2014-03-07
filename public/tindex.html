@@ -10,8 +10,8 @@
   
   .main-view
   {
-      margin-left:auto;
-      margin-right:auto;
+      /*margin-left:auto;
+      margin-right:auto;*/
       width:1000px;
   }
   
@@ -72,10 +72,7 @@ body
 {
     width:650px;
     position:relative;
-    height:330px;
-    margin-bottom:10px;
-    background-color: #A2B0C2 ;
-    
+    height:330px; 
 }
 
 .outer-image
@@ -102,15 +99,14 @@ body
     border-top: 1px solid #fff;
     border-bottom: 1px solid #fff;
     float:right;
-    width:340px;
     height:306px;
     margin-right:10px;
     margin-top:10px;
     background-color:#F5F5F5;
     -moz-border-radius: 10px;
--webkit-border-radius: 10px;
-border-radius: 10px; /* future proofing */
--khtml-border-radius: 10px; /* for old Konqueror browsers */
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
 }
 
 #user-container
@@ -138,8 +134,7 @@ border-radius: 10px; /* future proofing */
     margin-left:70px;
     top:11px;
     position:relative;
-    
-    width: 200px;
+    width: 250px;
 }
 
 #rank-container
@@ -151,9 +146,11 @@ border-radius: 10px; /* future proofing */
     position:relative;    
 }
 
-#text-container
+.text-container
 {
     font-size:0.8em;
+    overflow-y:auto;
+    height: 90px;
 }
 
 #operations
@@ -181,10 +178,36 @@ border-radius: 10px; /* future proofing */
             <div class="modal-footer">
                 <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
             </div>
+
         </script>
         
+        <script type="text/ng-template" id="my-customer.html">
+            <div ng-controller="Ctrl2">
+                  <div>
+                    <div class="cat-header">
+                      <input type="textbox" id="txtNewCategory" ng-model="category_name" />
+                      <input type="button" id="btnAddCategory" value="+" ng-click="saveCategory()"></input>
+                    </div>
+                    <div class="cat-main">
+                      <label ng-repeat="role in roles" style="display:block;">
+                        <input type="checkbox" checklist-model="user.roles" checklist-value="role._id"> {{role.category_name}} </input><br />
+                      </label>
+                    </div>
+                    <div class="buttons">
+                      <input type="button" ng-click="uncheckAll()" value="Uncheck All" />
+                      <input type="button" ng-click="removeSelected()" value="Remove Selected" />
+                    </div>
+                  </div>
+            </div>
+        </script>
         
-        
+        <div ng-controller="CategoriesControl">
+          <div ng-repeat="user in users | filter:user">
+               {{user.firstName}} {{user.lastName}} - Age: {{user.age}}
+          </div>
+        </div>
+
+
                         
                     	
                     <div class="post" ng-repeat="element in instaList">
@@ -213,9 +236,12 @@ border-radius: 10px; /* future proofing */
                               <button type="button" class="btn btn-primary" ng-click="open(element.instagram_id,element.image_standard_resolution,element.user_name)">
                                 Load Image
                               </button>
-                              <button type="button" class="btn btn-primary" popover-placement="top" popover="{{element._id}}">
+
+                              <a  class="btn btn-primary"  tooltip-html-unsafe="{{categoryTemplate}}" ng-click="showAlert()" >
                                 Categories
-                              </button>
+                              </a>
+                              <br />
+                              <div my-customer></div>
                           </div>
                         </div>
                     </div>
@@ -227,6 +253,45 @@ border-radius: 10px; /* future proofing */
 <script type="text/javascript">
 
 var app = angular.module("tpui", ['ngResource','ui.bootstrap']);
+
+app.factory('categoryUser', function(){
+
+  var categories;
+  var categoriesScope;
+
+  return {
+        getAllUsers: function() {
+            categories =  [
+                { firstName: 'Jane', lastName: 'Doe', age: 29 },
+                { firstName: 'John', lastName: 'Doe', age: 32 }
+            ];
+
+            return categories;
+        },
+        setAllUsers:function(){
+            categories =  [
+                { firstName: 'LOL', lastName: 'ASD', age: 29 },
+                { firstName: 'KAM', lastName: 'asa', age: 32 }
+            ];
+            categoriesScope.users = categories;
+        },setScope :function(baseScope)
+        {
+          categoriesScope = baseScope;
+        }
+    };
+});
+/*
+app.controller('NaomiCtrl',function($scope, categoryUser){
+  $scope.users = categoryUser.getAllUsers();
+});
+*/
+
+var CategoriesControl = function($scope,categoryUser){
+  $scope.users = categoryUser.getAllUsers();
+  categoryUser.setScope($scope);
+}
+
+
 
 app.directive('ngEnter', function () {
     return function (scope, element, attrs) {
@@ -244,14 +309,33 @@ app.directive('ngEnter', function () {
 
 
 
-function ListController($scope,$http, $modal, $log){
+  //This is a directive created in the pas
+  app.directive('myCustomer', function() {
+    return {
+      templateUrl: 'my-customer.html'
+    };
+  });
+
+
+
+/*
+  //This is the controller who make the action
+  function NaomiCtrl($scope,customerService)
+  {
+    console.log('customer-name#'+$scope.customerService);
+    //$scope.customer = customerService.getCustomer();
+  }
+*/
+
+
+function ListController($scope,$http, $modal, $log,$templateCache,categoryUser){
 
         $scope.instaList = [];
         $scope.lala = "Instagram Links";
         $scope.limit = 25;
         $scope.pcount = 0;
-        
-        
+        $scope.categoryTemplate = $templateCache.get("my-customer.html");
+
         $scope.loadImages = function(ev) {
           //if (ev.which==13)
             $http.get('/instacache_load?l='+$scope.limit).success(
@@ -286,9 +370,20 @@ function ListController($scope,$http, $modal, $log){
         
         /*Modal*/
         
-        
+  function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
+
   $scope.showAlert = function(msg){
-    alert(msg);
+    console.log(getOffset(this));
+    categoryUser.setAllUsers();
   };
 
   $scope.open = function (id, imageUrl, username) {
@@ -339,8 +434,105 @@ function openPage(link)
     location.href = link;
 }
 
+/*
+----------------------------------------------------------------
+START of the Categories controller
+----------------------------------------------------------------
+*/
+
+app.controller('Ctrl2', function($scope,$http) {
+    $scope.roles = [];
+    $scope.category_name = "";
+    $scope.currentUser = "global";
+    $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+            function(data, status, headers, config) {
+                    $scope.roles = $scope.roles.concat(data);
+            });
+    //Set the current ids to preselect as checked
+    $scope.user = {
+      //roles: ['531a4624dcfb844d40a167ae']
+    };
+    $scope.checkAll = function() {
+      $scope.user.roles = $scope.roles.map(function(item) { return item.id; });
+    };
+    $scope.uncheckAll = function() {
+      $scope.user.roles = [];
+    };
+    $scope.checkFirst = function() {
+      $scope.user.roles.splice(0, $scope.user.roles.length); 
+      $scope.user.roles.push(1);
+    };
+
+    $scope.saveCategory = function() {
+      
+
+      if( $scope.category_name == "")
+      {
+        alert("Please include a Name to add");
+        return;
+      }
+
+      $scope.roles = []; //Clear the roles to avoid staking
+
+      $http.get('/saveCategories?user_id='+$scope.currentUser+'&category_name='+$scope.category_name).success(
+        function(data, status, headers, config) {
+                $scope.category_name = "";
+                  $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+        });
+    };
+
+    $scope.saveCategory = function() {
+      
+
+      if( $scope.category_name == "")
+      {
+        alert("Please include a Name to add");
+        return;
+      }
+
+      $scope.roles = []; //Clear the roles to avoid staking
+
+      $http.get('/saveCategories?user_id='+$scope.currentUser+'&category_name='+$scope.category_name).success(
+        function(data, status, headers, config) {
+                $scope.category_name = "";
+                  $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+        });
+    };
 
 
+    $scope.removeSelected = function() {
+      
+      //$scope.roles = []; //Clear the roles to avoid staking
+      var ids = $scope.user.roles.map(function(x){
+        return x;
+      });
+
+      //alert(ids);
+      $http.get('/removeCategories?ids='+ids).success(function(){
+        $scope.roles = [];
+        $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+      });
+    };
+
+
+  });
+
+
+
+/*
+----------------------------------------------------------------
+END of the Categories controller
+----------------------------------------------------------------
+*/
 
   </script>
 </html>
