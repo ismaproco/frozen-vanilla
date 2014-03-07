@@ -2,3 +2,5 @@ heroku-client
 heroku-client.tgz
 node_modules
 conf.js
+frozen-vanilla.sublime-project
+frozen-vanilla.sublime-workspace
