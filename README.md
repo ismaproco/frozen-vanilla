@@ -1,3 +1,23 @@
+03/09/2014
+============
+- Updated the UI of the tindex page and controls to use the bootstrap css
+- Implemented controllers to the Categories management per Instagram image
+- New URL structure for operations and local menus.
+
+ToDo
+- There is a lot of code cleaning to do on the main page
+- Document Changes on the back end
+- Implement improvements on the facade
+- Implement the category page loading from the menu (new pages or self page load)
+
+
+Accomplishments
+
+- The ModelBase is working flawlessly
+
+*iSmA :)
+
+
 03/04/2014
 ============
 - Implemented the methods to work with the categories
