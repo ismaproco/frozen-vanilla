@@ -73,26 +73,72 @@ app.post('/removeCategories',function(req,res){
 //END Categories Methods
 
 
-//START CategoriesUser Methods
+app.get('/o/*',function(req,res){
+    var operation = req.path.split("/")[2];
+    //START CategoriesUser Methods
+    console.log('*=*=*=*=*=*=*= o?#'+operation);
+    switch(operation){
+        case "loadCategoriesUserByInstagram":
+            cm.loadUserCategoriesByInstagram(req,res);
+        break;
+        case "saveCategoriesUser":
+            cm.saveCategoriesUser(req,res);
+        break;
+        case "updateCategoriesUser":
+            cm.updateCategoriesUser(req,res);
+        break;
+    };
+    //END CategoriesUser Methods
+    
 
-app.get('loadCategoriesUserByInstagram',function(req, res){
-    cm.loadUserCategoriesByInstagram(req,res);
+
 });
 
-app.get('saveCategoriesUser',function(req, res){
-    cm.saveCategoriesUser(req,res);
+app.post('/o/*',function(req,res){
+    var operation = req.path.split("/")[2];
+    //START CategoriesUser Methods
+    console.log('*=*=*=*=*=*=*= o?#'+operation);
+    switch(operation){
+        case "loadCategoriesUserByInstagram":
+            cm.loadUserCategoriesByInstagram(req,res);
+        break;
+        case "saveCategoriesUser":
+            cm.saveCategoriesUser(req,res);
+        break;
+        case "updateCategoriesUser":
+            cm.updateCategoriesUser(req,res);
+        break;
+        default:
+            res.end();
+        break;
+    };
+    //END CategoriesUser Methods
 });
 
-app.post('saveCategoriesUser',function(req, res){
-    cm.saveCategoriesUser(req,res);
-});
-
-//END CategoriesUser Methods
 
 app.get('/r/*',function(req,res){
-    res.write(req.path.split("/")[2]);
+    var r = req.path.split("/")[2];
+    //START CategoriesUser Methods
+    console.log('*=*=*=*=*=*=*= r?# '+r);
+    
+    res.write(r);
     res.end();
+
+    //END CategoriesUser Methods
 });
+
+app.post('/r/*',function(req,res){
+    var r = req.path.split("/")[2];
+    //START CategoriesUser Methods
+    console.log('*=*=*=*=*=*=*= r?# '+r);
+    
+    res.write(r);
+    res.end();
+
+    //END CategoriesUser Methods
+});
+
+
 
 
 var port = process.env.PORT || 5000;

@@ -196,7 +196,7 @@ ConnectionManager.prototype.loadUserCategoriesByInstagram = function(req,res) {
 	console.log("|| ConnectionManager.prototype.loadUserCategoriesByInstagram ||");
 
 	
-	var instagram_id = req.param("u"); // User_id
+	var instagram_id = req.param("instagram_id"); // User_id
 	
 	console.log("parameter: instagram_id (u)," + instagram_id);
 	
@@ -223,20 +223,49 @@ ConnectionManager.prototype.loadUserCategoriesByInstagram = function(req,res) {
 
 ConnectionManager.prototype.saveCategoriesUser = function(req,res) {
   
-	console.log("|| ConnectionManager.prototype.saveCategoriesUser ||");
-	
+		var obj = 
+		{
+			    user_id:req.param('user_id'),
+			    category_id:req.param('category_id'),
+			    instagram_id:req.param('instagram_id'),
+			    date:Date.now()+"",
+			    votes:0,
+			    enable:true,
+			    res:res,
+		}
+
+		console.log("|| - SAVE - ConnectionManager.prototype.saveCategoriesUser ||");
+		mc.operation(mc.names[3],"save",obj);
+};
+
+
+ConnectionManager.prototype.updateCategoriesUser = function(req,res) {
+  
+	console.log("|| ConnectionManager.prototype.updateCategoriesUser ||");
+
 	var obj = 
 	{
-		    user_id:req.param('user_id'),
-		    category_id:req.param('category_id'),
-		    instagram_id:req.param('instagram_id'),
-		    date:Date.now()+"",
-		    votes:0,
-		    enable:true,
+		    filter:{"instagram_id":req.param('instagram_id'),'enable':true},
+		    operation:{
+		    	user_id:req.param('user_id'),
+			    category_id:req.param('category_id'),
+			    instagram_id:req.param('instagram_id'),
+			    date:Date.now()+"",
+			    votes:0,
+			    enable:true,
+		    },
+		    res:res,
 	}
 	
-	mc.operation(mc.names[3],"save",obj);
+	console.log("|| - UPDATE - ConnectionManager.prototype.updateCategoriesUser ||");
+
+	mc.operation(mc.names[3],"update",obj);
+		
+
 };
+
+
+
 
 
 /*

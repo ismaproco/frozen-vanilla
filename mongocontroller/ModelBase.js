@@ -66,6 +66,7 @@ ModelBase.prototype.get = function(obj)
                     return err
             }
             else {
+
             	if(obj.hasOwnProperty("res"))
             	{
             		obj.res.write(JSON.stringify(doc));
@@ -74,6 +75,14 @@ ModelBase.prototype.get = function(obj)
             	{
             		var ljson = JSON.stringify(doc);
             		console.log("element:-> " + ljson);
+
+            		if(obj.hasOwnProperty("callback"))
+	            	{
+	            		console.log("============ ||| Executing CALLBACK");
+	            		obj.callback(ljson);
+	            	}
+
+            		
             		return	ljson;
             	}
                 
