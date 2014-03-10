@@ -49,18 +49,29 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 	var limit = req.param("l");
 	var page = req.param("p");
 	var current_date  = req.param("cd");
+	var i_ids = req.param('instagram_id');
 	
-	console.log("parameter: " + limit + "," + page + "," + current_date);
+	console.log("parameter: " + limit + "," + page + "," + current_date+','+i_ids);
 	
 	var filter = {
 	    
 	};
 	
 	
-	if(typeof(current_date) != undefined && current_date != "")
+	if(typeof(current_date) != "undefined" && current_date != "")
     {
         filter = {"date":{$lte:current_date}};
     }
+
+
+    /* Add category in the query of the documents */
+    
+
+    if(typeof(i_ids) != "undefined" && i_ids != "")
+    {
+    	filter["instagram_id"] = {$in:i_ids.split(',')};
+    }
+    /**/
 	
 	if(typeof(limit) != undefined && limit != "")
     {
