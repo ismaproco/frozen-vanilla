@@ -180,10 +180,13 @@ body
         
         <header class="navbar navbar-default navbar-fixed-top">
             <div class="navbar-inner">
-                <div class="container">
+                <div class="">
                     <ul class="nav navbar-nav" >
+                            <li >
+                              <a href="/tindex.html">InstaIndex</a>
+                            </li>
                             <li ng-repeat="link in linkCategories">
-                              <a href="/r/{{link.category_name}}">{{link.category_name}}</a>
+                              <a href="/cindex.html?category={{link._id}}">{{link.category_name}}</a>
                             </li>
                     </ul>
                 </div>
@@ -236,7 +239,7 @@ body
 
 
                         
-                    	
+                      
                     <div class="post" ng-repeat="element in instaList">
                         <div class="outer-image">
                             <!-- This should be the image container -->
@@ -272,13 +275,27 @@ body
                           </div>
                         </div>
                     </div>
-                    	
-                    <div class="bar" ng-click="loadImagesPaginating($event)">load more {{pcount}}</div>	
-                    	
+                      
+                    <div class="bar" ng-click="loadImagesPaginating($event)">load more {{pcount}}</div> 
+                      
         
 </div>
 <script type="text/javascript">
 //<div my-customer></div>
+
+function getParam( name )
+{
+ name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+ var regexS = "[\\?&]"+name+"=([^&#]*)";
+ var regex = new RegExp( regexS );
+ var results = regex.exec( window.location.href );
+ if( results == null )
+  return "";
+else
+ return results[1];
+}
+
+
 var app = angular.module("tpui", ['ngResource','ui.bootstrap','checklist-model']);
 
 app.factory('categoryUser', function(){
@@ -362,11 +379,13 @@ function ListController($scope,$http, $modal, $log,$templateCache,categoryUser){
         $scope.limit = 25;
         $scope.pcount = 0;
         $scope.linkCategories = [];
+        $scope.categoryParam = getParam("category");
+
         //$scope.categoryTemplate = $templateCache.get("my-customer.html");
 
         $scope.loadImages = function(ev) {
           //if (ev.which==13)
-            $http.get('/instacache_load?l='+$scope.limit).success(
+            $http.get('/o/loadInstagramsByCategory?l='+$scope.limit+"&category="+$scope.categoryParam).success(
                 function(data, status, headers, config) {
                         $scope.instaList = $scope.instaList.concat( data);
 
@@ -376,7 +395,7 @@ function ListController($scope,$http, $modal, $log,$templateCache,categoryUser){
         
         $scope.loadImagesPaginating = function(ev) {
           //if (ev.which==13)
-            $http.get('/instacache_load?l='+$scope.limit +'&cd='+ $scope.instaList[$scope.instaList.length - 1].date ).success(
+            $http.get('/o/loadInstagramsByCategory?l='+$scope.limit +'&cd='+ $scope.instaList[$scope.instaList.length - 1].date +"&category="+$scope.categoryParam).success(
                 function(data, status, headers, config) {
                         $scope.pcount += 1;
                         $scope.instaList.pop();
@@ -394,7 +413,7 @@ function ListController($scope,$http, $modal, $log,$templateCache,categoryUser){
         
 
         //INSTAMENU IMAGES
-        $http.get('/instacache_load?l='+$scope.limit+'&cd=1999999999').success(
+        $http.get('/o/loadInstagramsByCategory?l='+$scope.limit+'&cd=1999999999'+"&category="+$scope.categoryParam).success(
                 function(data, status, headers, config) {
                         $scope.pcount += 1;
                         $scope.instaList = $scope.instaList.concat( data);

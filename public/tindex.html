@@ -180,10 +180,13 @@ body
         
         <header class="navbar navbar-default navbar-fixed-top">
             <div class="navbar-inner">
-                <div class="container">
+                <div class="">
                     <ul class="nav navbar-nav" >
+                            <li >
+                              <a href="/tindex.html">InstaIndex</a>
+                            </li>
                             <li ng-repeat="link in linkCategories">
-                              <a href="/r/{{link.category_name}}">{{link.category_name}}</a>
+                              <a href="/cindex.html?category={{link._id}}">{{link.category_name}}</a>
                             </li>
                     </ul>
                 </div>
@@ -191,7 +194,7 @@ body
         </header>
 
 
-        
+
         <script type="text/ng-template" id="myModalContent.html">
             <div class="modal-header">
                 <h3>User:{{selectedElement.user_name}}</h3>

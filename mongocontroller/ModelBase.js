@@ -36,6 +36,10 @@ ModelBase.prototype.save = function(obj)
 		
 		if (err) {
 			console.log(" ERROR -"+ entityName +" "+ err);
+			if(obj.hasOwnProperty("res"))
+			{
+				obj.res.end();
+			}
 			return err;
 		}
 		else {
@@ -63,14 +67,29 @@ ModelBase.prototype.get = function(obj)
             if (err) {
                 	console.log("-> ERROR");
 					console.log("|| GET /->"+err);
+					if(obj.hasOwnProperty("res"))
+					{
+						obj.res.end();
+					}
                     return err
             }
             else {
 
             	if(obj.hasOwnProperty("res"))
             	{
-            		obj.res.write(JSON.stringify(doc));
-                    obj.res.end();
+					console.log("============ ||| Res -> "+ obj.res);
+					console.log("============ ||| Call -> "+ obj.callback);
+            		if(obj.hasOwnProperty("callback"))
+	            	{
+	            		console.log("============ ||| Executing CALLBACK");
+	            		obj.callback(doc);
+	            	}else
+	            	{
+	            		console.log("============ ||| doc -> "+ JSON.stringify(doc));
+	            		obj.res.write(JSON.stringify(doc));
+                    	obj.res.end();
+	            	}
+
             	}else
             	{
             		var ljson = JSON.stringify(doc);
@@ -79,11 +98,11 @@ ModelBase.prototype.get = function(obj)
             		if(obj.hasOwnProperty("callback"))
 	            	{
 	            		console.log("============ ||| Executing CALLBACK");
-	            		obj.callback(ljson);
+	            		obj.callback(doc);
+	            	}else
+	            	{
+	            		return	ljson;	
 	            	}
-
-            		
-            		return	ljson;
             	}
                 
             }
@@ -98,7 +117,15 @@ ModelBase.prototype.remove = function(obj)
     var entityName = this.entityName;
 
     this.model.findById(obj.id, function(err, control) {
-	    if (err){console.log("Error Removing "+ entityName)}
+	    if (err){
+	    	console.log("Error Removing "+ entityName);
+
+	    	if(obj.hasOwnProperty("res"))
+			{
+				obj.res.end();
+			}
+
+		}
     	else{
 
     		if(control != null)
@@ -108,6 +135,7 @@ ModelBase.prototype.remove = function(obj)
 	    		if(obj.hasOwnProperty("res"))
 	    		{
 	    			obj.res.json(200, control);
+	    			obj.res.end();
 	    			console.log("Remove ok");
 	    		}else
 	    		{
@@ -127,7 +155,13 @@ ModelBase.prototype.removeWithFilter = function(obj)
     var entityName = this.entityName;
 
     this.model.remove(obj.filter, function(err) {
-		    if (err){console.log("Error Removing "+ entityName)}
+		    if (err){
+		    	console.log("Error Removing "+ entityName)
+		    	if(obj.hasOwnProperty("res"))
+				{
+					obj.res.end();
+				}
+		    }
 	    	else{	    		
 	    		if(obj.hasOwnProperty("res"))
 	    		{
@@ -149,6 +183,13 @@ ModelBase.prototype.update = function(obj)
 	  if (err) return handleError(err);
 	  console.log('++++++>The number of updated documents was %d', numberAffected);
 	  console.log('++++++>The raw response from Mongo was ', raw);
+
+		if(obj.hasOwnProperty("res"))
+				{
+					obj.res.end();
+				}
+
+	  
 	});
 
 	if(obj.hasOwnProperty("res"))

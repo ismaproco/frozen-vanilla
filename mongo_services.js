@@ -116,6 +116,86 @@ ConnectionManager.prototype.loadInstagram = function(req,res) {
 };
 
 
+ConnectionManager.prototype.loadInstagramsByCategory = function(req, res){
+	console.log("|| ConnectionManager.prototype.loadInstagramsByCategory ||");
+
+	var userId = req.param("u"); // User_id
+	var category = req.param("category"); // User_id
+
+	var limit = req.param("l");
+	var page = req.param("p");
+	var current_date  = req.param("cd");
+
+	
+	console.log("parameter: u," + userId);
+	
+	var filter = {
+	    
+	};
+
+	if(!isEmptyOrUndefined(userId))
+    {
+        filter["user_id"] = userId;
+        filter["enable"] = true;
+    }
+
+    if(!isEmptyOrUndefined(category))
+    {
+    	filter["category_id"] = {$in:category.split(',')};	
+    }
+
+    if(!isEmptyOrUndefined(limit))
+    {
+    	limit = parseInt(limit);
+    }else
+    {
+    	limit = 25;
+    }
+
+    if(!isEmptyOrUndefined(page))
+    {
+    	page = parseInt(page);	
+    }else
+    {
+    	page = 0;
+    }
+	
+	var elem_skip = page * limit;
+	
+	var obj = {
+		filter:filter,
+		res:res,
+		params:{sort:{date:-1},limit:limit,skip:elem_skip}
+	}
+
+
+	var customcall = function(element)
+	{
+		console.log("Finish HIM!!!!");
+
+		var ins_ids = element.map(function(x){return x.instagram_id});
+		console.log("ins_ids # "+ ins_ids);
+		
+		var filter = {instagram_id:{$in:ins_ids}};
+		var cobj = {
+			filter:filter,
+			res:res,
+			params:{sort:{date:-1}}
+		}
+
+		mc.operation(mc.names[0],"get",cobj);
+	}
+
+
+	obj.callback = customcall;
+
+
+	mc.operation(mc.names[3],"get",obj);
+
+};
+
+
+
 //=================================================
 
 ConnectionManager.prototype.loadCategoriesByUser = function(req,res) {

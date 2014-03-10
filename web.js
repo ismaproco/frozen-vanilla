@@ -87,6 +87,14 @@ app.get('/o/*',function(req,res){
         case "updateCategoriesUser":
             cm.updateCategoriesUser(req,res);
         break;
+        case "loadInstagramsByCategory":
+            console.log('pre-loaded#'+operation);
+            cm.loadInstagramsByCategory(req,res);
+            console.log('after-loaded#'+operation);
+        break;
+        default:
+            res.end();
+        break;
     };
     //END CategoriesUser Methods
     
@@ -107,6 +115,11 @@ app.post('/o/*',function(req,res){
         break;
         case "updateCategoriesUser":
             cm.updateCategoriesUser(req,res);
+        break;
+        case "loadInstagramsByCategory":
+            console.log('pre-loaded#'+operation);
+            cm.loadInstagramsByCategory(req,res);
+            console.log('after-loaded#'+operation);
         break;
         default:
             res.end();
