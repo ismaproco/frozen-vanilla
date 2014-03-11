@@ -1,3 +1,16 @@
+03/11/2014
+============
+- Categories methods has been implemented, on the main page
+- Custom instagram categories page
+
+ToDo
+- HTML pages need a lot of cleaning
+- Implement user login and security in the application
+
+
+*iSmA :)
+
+
 03/09/2014
 ============
 - Updated the UI of the tindex page and controls to use the bootstrap css
