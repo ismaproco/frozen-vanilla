@@ -224,7 +224,7 @@ ConnectionManager.prototype.loadCategoriesByUser = function(req,res) {
 	var obj = {
 		filter:filter,
 		res:res,
-		params:{sort:{category_name:-1}}
+		params:{sort:{category_name:1}}
 	}
 
 	mc.operation(mc.names[1],"get",obj);
