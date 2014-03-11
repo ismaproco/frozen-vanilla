@@ -141,7 +141,10 @@ ConnectionManager.prototype.loadInstagramsByCategory = function(req, res){
 
     if(!isEmptyOrUndefined(category))
     {
-    	filter["category_id"] = {$in:category.split(',')};	
+
+    	var carr = category.split(',').map(function(x){return new RegExp(x);});
+
+    	filter["category_id"] = {$in:carr};	
     }
 
     if(!isEmptyOrUndefined(limit))
