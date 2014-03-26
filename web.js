@@ -8,6 +8,15 @@ var mongo = require('./mongo_services.js');
 
 var app = express();
 
+//This code is to cache the files for one day, and to compress the content
+app.use(express.compress());
+
+var oneDay = 86400000;
+
+app.use(express.static(__dirname + '/public', { maxAge: oneDay }));
+//
+
+
 var cm = new mongo();
 cm.init();
 
