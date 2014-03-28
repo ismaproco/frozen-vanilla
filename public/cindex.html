@@ -397,9 +397,13 @@ function ListController($scope,$http, $modal, $log,$templateCache,categoryUser){
           //if (ev.which==13)
             $http.get('/o/loadInstagramsByCategory?l='+$scope.limit +'&cd='+ $scope.instaList[$scope.instaList.length - 1].date +"&category="+$scope.categoryParam).success(
                 function(data, status, headers, config) {
-                        $scope.pcount += 1;
-                        $scope.instaList.pop();
-                        $scope.instaList = $scope.instaList.concat( data);
+                        if(data.length > 0)
+                        {
+                          $scope.pcount += 1;
+                          $scope.instaList.pop();
+                          $scope.instaList = $scope.instaList.concat( data);  
+                        }
+                        
                 });
         }
         

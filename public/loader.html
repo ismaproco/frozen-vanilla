@@ -76,6 +76,7 @@ function SwitchableGridController($scope,$http, instagram){
 
 		// Assigning the pics array will cause the view
 		// to be automatically redrawn by Angular.
+		//---> Commented by me
 		$scope.pics = data;
 		saveInstagramData(data);
 	});
@@ -184,7 +185,7 @@ function SwitchableGridController($scope,$http, instagram){
 	<ul ng-show="layout == 'list'" class="list">
 		<!-- A compact view smaller photos and titles -->
 		<li ng-repeat="p in pics">
-			<a href="{{p.link}}" target="_blank"><img ng-src="{{p.images.thumbnail.url}}" /></a>
+			<a href="{{p.link}}" target="_blank"> {{p.images.thumbnail.url}} </a>
 			<p>{{p.caption.text}}</p>
 		</li>
 	</ul>

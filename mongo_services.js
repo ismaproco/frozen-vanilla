@@ -133,6 +133,11 @@ ConnectionManager.prototype.loadInstagramsByCategory = function(req, res){
 	    
 	};
 
+	if(typeof(current_date) != "undefined" && current_date != "")
+    {
+        filter = {"date":{$lte:current_date}};
+    }
+
 	if(!isEmptyOrUndefined(userId))
     {
         filter["user_id"] = userId;
@@ -194,7 +199,6 @@ ConnectionManager.prototype.loadInstagramsByCategory = function(req, res){
 
 
 	mc.operation(mc.names[3],"get",obj);
-
 };
 
 
