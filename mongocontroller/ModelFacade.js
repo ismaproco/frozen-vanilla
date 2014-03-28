@@ -14,7 +14,7 @@ function createModel(modelName) {
 	return mapper[modelname];
 }
 
-function ModelFacade() {};
+function ModelFacade() {}
 
 var mapper = {};
 
@@ -32,8 +32,8 @@ function loadMapper() {
 	mapper[arr_names[3]] = new modelCategoriesUser(mongoose4);
 }
 
-function operation(modelname, operation, obj) {
-	return mapper[modelname][operation](obj);
+function operation(modelname, action, obj) {
+	return mapper[modelname][action](obj);
 }
 
 
