@@ -253,7 +253,10 @@ body
                                 <div id="user-image" style="background-image:url('{{element.user_profile_picture}}')" onclick="">
                                 </div>
                                 <div id="user-name">
-                                    <div class="username-container"><a href="//instagram.com/{{element.user_name}}" target="blank">{{element.user_name}}</a>
+                                    <div class="username-container">
+                                      <a href="//instagram.com/{{element.user_name}}" target="blank">{{element.user_name}}</a>
+                                      <br> 
+                                      <a href="{{element.link}}" target="blank">{{element.link}}</a>
                                     </div>
                                     <div class="date-container">{{element.date}}
                                     </div>
