@@ -1,0 +1,677 @@
+<!doctype html>
+<meta charset="utf-8">
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Grid Insta</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+  <style>
+  
+  .main-view
+  {
+      /*margin-left:auto;
+      margin-right:auto;*/
+      width:1000px;
+  }
+  
+  .inner_div
+  {
+     position:relative;top:-40px;background-color:#f7f7f7;opacity:0.8; 
+  }
+  
+  .left_div
+  {
+    float:left;
+    height:150px;
+  }
+  
+  
+  .list-icon {
+        background-image: url(/img/send.png);
+        background-repeat:no-repeat;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-decoration: none !important;
+        margin-right: 5px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .grid-icon {
+        background-image: url(/img/edit.png);
+        background-repeat:no-repeat;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-decoration: none !important;
+        margin-right: 5px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .vertical_bar
+    {
+        height: 80px;
+        position: absolute;
+        width: 34px;
+        right: 30px;
+        top: 10px;
+    }
+
+  
+  html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote, pre, form, fieldset, table, th, td { margin: 0; padding: 0; } 
+body
+{
+    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+.post
+{
+    width:650px;
+    position:relative;
+    height:330px; 
+}
+
+.outer-image
+{
+    border: 1px solid #fff;
+    float:left;
+    width:306px;
+    height:306px;
+    position:absolute;
+    margin-left:10px;
+    margin-top:10px;
+}
+
+#image-container
+{
+    width:100%;
+    height:100%;
+    
+    position:relative;
+}
+
+.outer-info
+{
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    float:right;
+    height:306px;
+    margin-right:10px;
+    margin-top:10px;
+    background-color:#F5F5F5;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+}
+
+#user-container
+{
+    width:100%;
+    height:150px;
+    top:5px;
+    
+    position:relative;    
+}
+
+#user-image
+{
+    width:50px;
+    height:50px;
+    background-size: 100% 100%;
+    top: 10px;
+    left: 10px;
+    position:absolute; 
+}
+
+#user-name
+{
+    height:100px;
+    margin-left:70px;
+    top:11px;
+    position:relative;
+    width: 250px;
+}
+
+#rank-container
+{
+    width:100%;
+    height:140px;
+    margin-top:10px;
+    
+    position:relative;    
+}
+
+.text-container
+{
+    font-size:0.8em;
+    overflow-y:auto;
+    height: 90px;
+}
+
+#operations
+{
+  margin-left: 70px;
+}
+
+.main-categories
+{
+  margin: 30px;
+}
+
+  
+  </style>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+  <script type="text/javascript" src="js/checklistmodel.js"></script>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+
+
+
+
+<div ng-app="tpui" ng-controller="ListController" class="main-view">
+        
+        <header class="navbar navbar-default navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="">
+                    <ul class="nav navbar-nav" >
+                            <li >
+                              <a href="/tindex.html">InstaIndex</a>
+                            </li>
+                            <li ng-repeat="link in linkCategories">
+                              <a href="/cindex.html?category={{link._id}}">{{link.category_name}}</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+
+        
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3>User:{{selectedElement.user_name}}</h3>
+            </div>
+            <div class="modal-body">
+                <img src="{{ selectedElement.image_standard_resolution }}" width="100%" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+
+        </script>
+        
+        <script type="text/ng-template" id="my-customer.html">
+            <div class="main-categories" ng-controller="Ctrl2">
+                  <div>
+                    <div class="cat-header">
+                      <div style="width:80%;display:inline-block;">
+                      <input class="form-control ng-pristine ng-valid" type="textbox" id="txtNewCategory" ng-model="category_name" />
+                      </div>
+                      <input type="button"  class="btn btn-warning" id="btnAddCategory" value="+" ng-click="saveCategory()"></input>
+                    </div>
+                    <div class="cat-main">
+                      <label ng-repeat="role in roles" style="display:block;">
+                        <input type="checkbox" checklist-model="user.roles" checklist-value="role._id"> {{role.category_name}} </input><br />
+                      </label>
+                    </div>
+                    <div class="buttons">
+                      <input type="button" class="btn btn-warning" ng-click="uncheckAll()" value="Uncheck All" />
+                      <input type="button" class="btn btn-warning" ng-click="removeSelected()" value="Remove Selected" />
+                      <input type="button" class="btn btn-warning" ng-click="saveCategoryInstagram()" value="Save Categories" />
+                    </div>
+                  </div>
+            </div>
+        </script>
+        
+        <div ng-controller="CategoriesControl">
+          <div ng-repeat="user in users | filter:user">
+               {{user.firstName}} {{user.lastName}} - Age: {{user.age}}
+          </div>
+        </div>
+
+
+                        
+                      
+                    <div class="post" ng-repeat="element in instaList">
+                        <div class="outer-image">
+                            <!-- This should be the image container -->
+                            <div id="image-container">
+                                {{element.image_low_resolution}}
+                            </div>
+                        </div>
+                        <div class="outer-info">
+                            <!-- This should be user information container -->
+                            <div id="user-container">
+                                <div id="user-image" >
+                                  {{element.user_profile_picture}}
+                                </div>
+                                <div id="user-name">
+                                    <div class="username-container">
+                                      <a href="//instagram.com/{{element.user_name}}" target="blank">{{element.user_name}}</a>
+                                      <br> 
+                                      <a href="{{element.link}}" target="blank">{{element.link}}</a>
+                                    </div>
+                                    <div class="date-container">{{element.date}}
+                                    </div>
+                                    <div class="text-container">{{element.text}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="operations">
+                              <button type="button" class="btn btn-primary" ng-click="openModelImage(element.instagram_id,element.image_standard_resolution,element.user_name)">
+                                Load Image
+                              </button>
+
+                              <a  class="btn btn-primary"  ng-click="openModelCategories(element.instagram_id,element.image_standard_resolution,element.user_name)" >
+                                Categories
+                              </a>
+                              <br />
+                              
+                          </div>
+                        </div>
+                    </div>
+                      
+                    <div class="bar" ng-click="loadImagesPaginating($event)">load more {{pcount}}</div> 
+                      
+        
+</div>
+<script type="text/javascript">
+//<div my-customer></div>
+
+function getParam( name )
+{
+ name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+ var regexS = "[\\?&]"+name+"=([^&#]*)";
+ var regex = new RegExp( regexS );
+ var results = regex.exec( window.location.href );
+ if( results == null )
+  return "";
+else
+ return results[1];
+}
+
+
+var app = angular.module("tpui", ['ngResource','ui.bootstrap','checklist-model']);
+
+app.factory('categoryUser', function(){
+
+  var categories;
+  var categoriesScope;
+
+  return {
+        getAllUsers: function() {
+            categories =  [
+                { firstName: 'Jane', lastName: 'Doe', age: 29 },
+                { firstName: 'John', lastName: 'Doe', age: 32 }
+            ];
+
+            return categories;
+        },
+        setAllUsers:function(){
+            categories =  [
+                { firstName: 'LOL', lastName: 'ASD', age: 29 },
+                { firstName: 'KAM', lastName: 'asa', age: 32 }
+            ];
+            categoriesScope.users = categories;
+        },setScope :function(baseScope)
+        {
+          categoriesScope = baseScope;
+        }
+    };
+});
+/*
+app.controller('NaomiCtrl',function($scope, categoryUser){
+  $scope.users = categoryUser.getAllUsers();
+});
+*/
+
+var CategoriesControl = function($scope,categoryUser){
+  $scope.users = categoryUser.getAllUsers();
+  categoryUser.setScope($scope);
+}
+
+
+
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+
+
+  //This is a directive created in the pas
+  app.directive('myCustomer', function() {
+    return {
+      templateUrl: 'my-customer.html'
+    };
+  });
+
+
+
+/*
+  //This is the controller who make the action
+  function NaomiCtrl($scope,customerService)
+  {
+    console.log('customer-name#'+$scope.customerService);
+    //$scope.customer = customerService.getCustomer();
+  }
+*/
+
+
+function ListController($scope,$http, $modal, $log,$templateCache,categoryUser){
+
+        $scope.instaList = [];
+        $scope.lala = "Instagram Links";
+        $scope.limit = 25;
+        $scope.pcount = 0;
+        $scope.linkCategories = [];
+        $scope.categoryParam = getParam("category");
+
+        //$scope.categoryTemplate = $templateCache.get("my-customer.html");
+
+        $scope.loadImages = function(ev) {
+          //if (ev.which==13)
+            $http.get('/o/loadInstagramsByCategory?l='+$scope.limit+"&category="+$scope.categoryParam).success(
+                function(data, status, headers, config) {
+                        $scope.instaList = $scope.instaList.concat( data);
+
+                });
+        }
+        
+        
+        $scope.loadImagesPaginating = function(ev) {
+          //if (ev.which==13)
+            $http.get('/o/loadInstagramsByCategory?l='+$scope.limit +'&cd='+ $scope.instaList[$scope.instaList.length - 1].date +"&category="+$scope.categoryParam).success(
+                function(data, status, headers, config) {
+                        if(data.length > 0)
+                        {
+                          $scope.pcount += 1;
+                          $scope.instaList.pop();
+                          $scope.instaList = $scope.instaList.concat( data);  
+                        }
+                        
+                });
+        }
+        
+        //CATEGORIES MENU
+
+        $http.get('/loadCategoriesByUser?u=global').success(
+                function(data, status, headers, config) {
+                        $scope.linkCategories = $scope.linkCategories.concat( data);
+
+                });
+        
+
+        //INSTAMENU IMAGES
+        $http.get('/o/loadInstagramsByCategory?l='+$scope.limit+'&cd=1999999999'+"&category="+$scope.categoryParam).success(
+                function(data, status, headers, config) {
+                        $scope.pcount += 1;
+                        $scope.instaList = $scope.instaList.concat( data);
+
+                });
+        
+        
+        
+        /*Modal*/
+        
+  function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
+
+  $scope.showAlert = function(msg){
+    console.log(getOffset(this));
+    categoryUser.setAllUsers();
+  };
+
+  $scope.openModelImage = function (id, imageUrl, username) {
+    $scope.selectedElement = {};
+    $scope.selectedElement.instagram_id=id;
+    $scope.selectedElement.image_standard_resolution=imageUrl;
+    $scope.selectedElement.user_name=username;
+
+    var modalInstance = $modal.open({
+      templateUrl: 'myModalContent.html',
+      controller: ModalInstanceCtrl,
+      resolve: {
+        selectedElement: function(){
+          return $scope.selectedElement;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+
+
+  $scope.openModelCategories = function (id, imageUrl, username) {
+    $scope.selectedElement = {};
+    $scope.selectedElement.instagram_id=id;
+    $scope.selectedElement.image_standard_resolution=imageUrl;
+    $scope.selectedElement.user_name=username;
+    $scope.selectedElement.instaCategories = [];
+
+    var modalInstance = $modal.open({
+      templateUrl: 'my-customer.html',
+      controller: ModalInstanceCtrlCategories,
+      resolve: {
+        selectedElement: function(){
+          return $scope.selectedElement;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  };
+
+
+
+
+
+
+
+};
+
+// Please note that $modalInstance represents a modal window (instance) dependency.
+// It is not the same as the $modal service used above.
+
+var ModalInstanceCtrl = function ($scope, $modalInstance, selectedElement) {
+
+  //$scope.items = items;
+  $scope.selectedElement = selectedElement;
+
+
+  $scope.ok = function () {
+    //$modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+        
+        /*Modal*/
+}
+
+var ModalInstanceCtrlCategories = function ($scope, $modalInstance,$http, selectedElement) {
+
+  //$scope.items = items;
+  $scope.selectedElement = selectedElement;
+  $scope.modalInstance = $modalInstance;
+  
+  $scope.ok = function () {
+    //$modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+        
+        /*Modal*/
+}
+
+
+
+function openPage(link)
+{
+    location.href = link;
+}
+
+/*
+----------------------------------------------------------------
+START of the Categories controller
+----------------------------------------------------------------
+*/
+
+app.controller('Ctrl2', function($scope,$http) {
+    $scope.roles = [];
+    $scope.category_name = "";
+    $scope.currentUser = "global";
+    $scope.CategoriesUserState = "save";
+
+    $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+            function(data, status, headers, config) {
+                    $scope.roles = $scope.roles.concat(data);
+            });
+
+
+    $http.get('/o/loadCategoriesUserByInstagram?instagram_id='+$scope.selectedElement.instagram_id).success(
+                function(data, status, headers, config) {
+                        if(data.length > 0)
+                        {
+                          $scope.selectedElement.instaCategories = data[0].category_id.split(',');
+                          $scope.user.roles = $scope.selectedElement.instaCategories ;
+                          console.log("instaCategories#"+$scope.selectedElement.instaCategories); 
+                          $scope.CategoriesUserState = "update";
+                        }
+                });
+
+
+    //Set the current ids to preselect as checked
+    $scope.user = {
+      roles: $scope.selectedElement.instaCategories
+    };
+
+    $scope.checkAll = function() {
+      $scope.user.roles = $scope.roles.map(function(item) { return item.id; });
+    };
+    $scope.uncheckAll = function() {
+      $scope.user.roles = [];
+    };
+    $scope.checkFirst = function() {
+      $scope.user.roles.splice(0, $scope.user.roles.length); 
+      $scope.user.roles.push(1);
+    };
+
+
+    $scope.saveCategory = function() {
+
+      if( $scope.category_name == "")
+      {
+        alert("Please include a Name to add");
+        return;
+      }
+
+      $scope.roles = []; //Clear the roles to avoid staking
+
+      $http.get('/saveCategories?user_id='+$scope.currentUser+'&category_name='+$scope.category_name).success(
+        function(data, status, headers, config) {
+                $scope.category_name = "";
+                  $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+        });
+    };
+
+
+    $scope.saveCategoryInstagram = function() {
+
+      if( typeof($scope.user.roles)!= "undefined" )
+      {
+        switch($scope.CategoriesUserState){
+          case "update":
+              $http.get('/o/updateCategoriesUser?instagram_id='+$scope.selectedElement.instagram_id+'&category_id='+$scope.user.roles.join()+'&user_id='+$scope.currentUser).success(
+                function(data, status, headers, config) {
+                    $scope.modalInstance.close('cancel');
+            });
+          break;
+          case "save":
+              $http.get('/o/saveCategoriesUser?instagram_id='+$scope.selectedElement.instagram_id+'&category_id='+$scope.user.roles.join()+'&user_id='+$scope.currentUser).success(
+                function(data, status, headers, config) {
+                      $scope.modalInstance.close('cancel');
+              });
+          break;
+        }
+
+
+        
+      }
+      else{
+        alert("Select at least one category");
+      }
+    };
+
+
+
+
+    $scope.removeSelected = function() {
+      
+      //$scope.roles = []; //Clear the roles to avoid staking
+      var ids = $scope.user.roles.map(function(x){
+        return x;
+      });
+
+      //alert(ids);
+      $http.get('/removeCategories?ids='+ids).success(function(){
+        $scope.roles = [];
+        $http.get('loadCategoriesByUser?u='+$scope.currentUser).success(
+                    function(data, status, headers, config) {
+                            $scope.roles = $scope.roles.concat(data);
+                    });
+      });
+    };
+
+
+  });
+
+
+
+/*
+----------------------------------------------------------------
+END of the Categories controller
+----------------------------------------------------------------
+*/
+
+  </script>
+</html>
