@@ -10,32 +10,29 @@ var modelCategories = require('./modelCategories');
 var modelParameters = require('./modelParameters');
 var modelCategoriesUser = require('./modelCategoriesUser');
 
-function createModel(modelName)
-{
+function createModel(modelName) {
 	return mapper[modelname];
 }
 
-function ModelFacade(){};
+function ModelFacade() {};
 
 var mapper = {};
 
 var arr_names = [
-				"modelInstacache",
-				"modelCategories",
-				"modelParameters",
-				"modelCategoriesUser"
-				];
+	"modelInstacache",
+	"modelCategories",
+	"modelParameters",
+	"modelCategoriesUser"
+];
 
-function loadMapper()
-{
+function loadMapper() {
 	mapper[arr_names[0]] = new modelInstacache(mongoose);
 	mapper[arr_names[1]] = new modelCategories(mongoose2);
 	mapper[arr_names[2]] = new modelParameters(mongoose3);
 	mapper[arr_names[3]] = new modelCategoriesUser(mongoose4);
 }
 
-function operation(modelname,operation,obj)
-{
+function operation(modelname, operation, obj) {
 	return mapper[modelname][operation](obj);
 }
 

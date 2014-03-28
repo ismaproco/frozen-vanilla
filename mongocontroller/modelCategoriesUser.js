@@ -7,19 +7,18 @@ Model.constructor = Model;
 
 
 //Constructor of the class
-function Model(mongoose)
-{
+function Model(mongoose) {
 	//document definition
 	this.documentDefinition = new mongoose.Schema({
-		    user_id:String,
-		    category_id:String,
-		    instagram_id:String,
-		    date:String,
-		    votes:Number,
-		    enable:Boolean
+		user_id: String,
+		category_id: String,
+		instagram_id: String,
+		date: String,
+		votes: Number,
+		enable: Boolean
 	});
 	this.mongoose = mongoose;
-	this.init(mongoose,"CategoriesUser",this.documentDefinition);
+	this.init(mongoose, "CategoriesUser", this.documentDefinition);
 }
 
 module.exports = Model;
