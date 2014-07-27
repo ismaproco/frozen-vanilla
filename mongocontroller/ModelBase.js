@@ -13,7 +13,7 @@ ModelBase.prototype.init = function(mongoose, _entityName, documentElement) {
 	this.entityName = _entityName;
 	this.documentElement = documentElement;
 	console.log("init " + this.entityName + " " + documentElement);
-	this.model = db.model(this.entityName, this.documentElement);
+	this.model = db.model(this.entityName, this.documentElement,this.entityName);
 };
 
 ModelBase.prototype.save = function(obj) {
@@ -69,7 +69,7 @@ ModelBase.prototype.get = function(obj) {
 					console.log("============ ||| Executing CALLBACK");
 					obj.callback(doc);
 				} else {
-					console.log("============ ||| doc -> " + JSON.stringify(doc));
+					//console.log("============ ||| doc -> " + JSON.stringify(doc));
 					obj.res.write(JSON.stringify(doc));
 					obj.res.end();
 				}
@@ -145,6 +145,55 @@ ModelBase.prototype.removeWithFilter = function(obj) {
 	});
 };
 
+ModelBase.prototype.count = function(obj) {
+	console.log("count:Entity - " + this.entityName);
+	console.log("count:Model - " + typeof(this.model));
+	var entityName = this.entityName;
+
+	var numberOfDocuments = this.model.count({},
+		function(err,count){
+			if (obj.hasOwnProperty("res") && !err) {
+				console.log("============ ||| Res -> " + obj.res);
+				console.log("============ ||| Call -> " + obj.callback);
+				if (obj.hasOwnProperty("callback")) {
+					console.log("============ ||| Executing CALLBACK");
+					obj.callback(count);
+				} else {
+					//console.log("============ ||| doc -> " + JSON.stringify(doc));
+					console.log("============ ||| numberOfDocuments -> " + count);
+					obj.res.write( JSON.stringify( count ) );
+					obj.res.end();
+				}
+
+			} else {
+				
+				var ljson = JSON.stringify( count ) ;
+
+				console.log("element:-> " + ljson);
+
+				if (obj.hasOwnProperty("callback")) {
+
+					console.log("============ ||| Executing CALLBACK");
+
+					obj.callback( JSON.stringify( ljson ) );
+				} else {
+					return ljson;
+				}
+			}		
+		});
+	
+	
+};
+
+
+var getKeys = function(obj){
+   var keys = [];
+   for(var key in obj){
+      keys.push(key);
+   }
+   return keys;
+}
+
 
 
 ModelBase.prototype.update = function(obj) {
@@ -173,5 +222,10 @@ ModelBase.prototype.update = function(obj) {
 	return "";
 };
 
+ModelBase.prototype.custom = function(obj) {
+	console.log("obj.name -> " + obj.name);
+	
+	this.model.find({}, function(err, data) { console.log(err, data, data.length); });
+};
 
 module.exports = ModelBase;
