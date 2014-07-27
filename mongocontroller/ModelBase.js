@@ -46,9 +46,7 @@ ModelBase.prototype.save = function(obj) {
 
 ModelBase.prototype.get = function(obj) {
 	//obj.params = {sort:{_id:-1},limit:1};
-	//obj.filter;
-	//obj.res
-
+	
 	console.log("getOne:Entity - " + this.entityName);
 	console.log("getOne:Model - " + typeof(this.model));
 
@@ -69,7 +67,7 @@ ModelBase.prototype.get = function(obj) {
 					console.log("============ ||| Executing CALLBACK");
 					obj.callback(doc);
 				} else {
-					//console.log("============ ||| doc -> " + JSON.stringify(doc));
+					
 					obj.res.write(JSON.stringify(doc));
 					obj.res.end();
 				}
@@ -159,7 +157,7 @@ ModelBase.prototype.count = function(obj) {
 					console.log("============ ||| Executing CALLBACK");
 					obj.callback(count);
 				} else {
-					//console.log("============ ||| doc -> " + JSON.stringify(doc));
+					
 					console.log("============ ||| numberOfDocuments -> " + count);
 					obj.res.write( JSON.stringify( count ) );
 					obj.res.end();
@@ -217,7 +215,6 @@ ModelBase.prototype.update = function(obj) {
 	} else {
 		console.log("Update ok - no res");
 	}
-
 
 	return "";
 };
