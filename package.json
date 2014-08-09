@@ -11,7 +11,8 @@
     "mongoose": "3.8.x",
     "nodetime": "0.x.x",
     "passport": "0.2.x",
-    "passport-google-oauth": "0.1.5"
+    "passport-google-oauth": "0.1.5",
+    "jasmin-node": "~1.14.15"
   },
   "engines": {
     "node": "0.10.x",
