@@ -2,6 +2,7 @@ var modelBase = require("./ModelBase");
 
 //Inhiterance of the ModelBase class
 Model.prototype = new modelBase();
+
 //Set the local method as constructor
 Model.constructor = Model;
 
