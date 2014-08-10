@@ -1,3 +1,16 @@
+08/10/2014
+============
+- The dependencies were cleared
+- Added test-cases for the mongocontroller library
+- Removed passport from the project
+
+ToDo
+- Implement facebook login
+- More html changes
+- Improve mongocontroller documentation and coed readness
+
+
+
 03/11/2014
 ============
 - Categories methods has been implemented, on the main page
