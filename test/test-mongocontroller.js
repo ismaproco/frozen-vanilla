@@ -1,8 +1,5 @@
 var mongoController = require('../mongocontroller/ModelFacade');
 
-
-
-
 var obj = {};
 
 obj.filter = {"instagram_id":"632733595347668411_231432514"};
