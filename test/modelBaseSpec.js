@@ -3,20 +3,22 @@
 var modelBase = require('../mongocontroller/ModelBase.js');
 var mongoose = require('mongoose');
 
-describe('modelBase',function(){
+//Create the schema to work
+function PersonHelper(){
+    this.documentDefinition = new mongoose.Schema({
+        name:String,
+        age: Number              
+    });
+};
 
-    //Create the schema to work
-    function PersonHelper(){
-        this.documentDefinition = new mongoose.Schema({
-            name:String,
-            age: Number              
-        });
-    };
+PersonHelper.prototype = new modelBase();
 
-    PersonHelper.prototype = new modelBase();
+var helper = new PersonHelper();
 
-    var helper = new PersonHelper();
 
+describe('modelBase init',function(){
+    
+    // Code to Execute before the async spec
     beforeEach(function(done) {
         var resultCallback = function(obj){
             done();
@@ -27,22 +29,48 @@ describe('modelBase',function(){
 
     // verify init 
     it('Should return ok if init is {status:"ok"}',function() {
-        console.log("result:"+helper.dbStatus.status);
         expect(helper.dbStatus.status).toEqual("ok");
     });
 
+    // Code to Execute after the async spec
+    afterEach(function(done) {
+      done();
+    });
+});
+
+
+describe('modelBase save',function(){
+    
+    var obj = 
+    {
+        name:"Joe",
+        age:"14"
+    }
+
+    // Code to Execute before the async spec
+    beforeEach(function(done) {
+        obj.callback = function(){
+            done();
+        };
+
+        helper.save(obj);
+    });
+
+    // verify init 
+    it('Should return ok if save is succesful {status:"ok"}',function() {
+        expect(obj.result.status).toEqual("ok");
+    });
+
+    // Code to Execute after the async spec
     afterEach(function(done) {
       done();
     });
 
 });
 
-
 /*
 // verify save
-    it('Should save object {name:"Joe"} and return {status:"ok"}',function(){
-        expect(false);
-    });
+    
 
     //verify get
     it('Should return the virified schema {name:"Joe"}',function(){

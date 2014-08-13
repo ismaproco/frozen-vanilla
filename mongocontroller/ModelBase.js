@@ -37,30 +37,28 @@ ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbRe
 
 ModelBase.prototype.save = function(obj) {
     var entityName = this.entityName;
-    console.log("save " + entityName);
-
 
     //create new model
     var p = new this.model(obj);
 
     //save model to MongoDB
     p.save(function(err) {
-
         if (err) {
-            console.log(" ERROR -" + entityName + " " + err);
-            if (obj.hasOwnProperty("res")) {
-                obj.res.end();
-            }
-            return err;
+            obj.result = {status:"error",message:err};
         } else {
-            console.log(" Saved - " + entityName + " _id " + p._id);
+            obj.result = {status:"ok",id:p._id};            
         }
 
         if (obj.hasOwnProperty("res")) {
             obj.res.end();
         }
 
+        if (obj.hasOwnProperty("callback")) {
+            obj.callback(obj.result);
+        }
     });
+
+    return;
 };
 
 ModelBase.prototype.get = function(obj) {
