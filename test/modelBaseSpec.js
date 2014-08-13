@@ -6,20 +6,34 @@ var mongoose = require('mongoose');
 describe('modelBase',function(){
 
     //Create the schema to work
-    function Person(){
+    function PersonHelper(){
         this.documentDefinition = new mongoose.Schema({
             name:String,
             age: Number              
         });
     };
 
-    Person.prototype = new modelBase();
+    PersonHelper.prototype = new modelBase();
+
+    var helper = new PersonHelper();
+
+    var validator = {
+                result: function(value) {
+                    return value;
+                }
+            };
 
     // verify init 
     it('Should return ok if init is {status:"ok"}',function() {
-        var person = new Person();
-        var result = person.init(mongoose,"person", person.documentDefinition );
-        expect(result.status).toEqual("ok");
+        
+        spyOn(validator, 'result');
+
+        waitsFor(function() {
+            return helper.init(mongoose,"person", helper.documentDefinition, validator.result );
+        }, "The Ajax call timed out.", 5000);
+
+        
+        expect(validator.result).toHaveBeenCalledWith({status:"ok"});
     });
 
 

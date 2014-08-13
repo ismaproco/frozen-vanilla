@@ -4,19 +4,25 @@ documentElement = {};
 
 function ModelBase() {}
 
-ModelBase.prototype.init = function(mongoose, _entityName, documentElement) {
+ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbResponseCallback) {
 
     console.log("MONGO_URL " + conf.MONGO_URL);
     if (mongoose.connection.readyState === 0)
+    {
         db = mongoose.connect(conf.MONGO_URL);
+    }
 
-    this.entityName = _entityName;
-    this.documentElement = documentElement;
-    console.log("init " + this.entityName + " " + documentElement);
-    this.model = db.model(this.entityName, this.documentElement,this.entityName);
+    var db = mongoose.connection;
+    
+    db.on('error', dbResponseCallback );
 
-    return {status:"ok"};
-
+    db.once('open',function(){
+        this.entityName = _entityName;
+        this.documentElement = documentElement;
+        this.model = db.model(this.entityName, this.documentElement,this.entityName);
+        return dbResponseCallback( {status:"ok"} );
+        console.log("ok");
+    })
 };
 
 ModelBase.prototype.save = function(obj) {
