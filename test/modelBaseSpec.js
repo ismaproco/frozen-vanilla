@@ -17,27 +17,29 @@ describe('modelBase',function(){
 
     var helper = new PersonHelper();
 
-    var validator = {
-                result: function(value) {
-                    return value;
-                }
-            };
+    beforeEach(function(done) {
+        var resultCallback = function(obj){
+            done();
+            return obj;
+        };
+        helper.init(mongoose,"person", helper.documentDefinition, resultCallback );      
+    });
 
     // verify init 
     it('Should return ok if init is {status:"ok"}',function() {
-        
-        spyOn(validator, 'result');
-
-        waitsFor(function() {
-            return helper.init(mongoose,"person", helper.documentDefinition, validator.result );
-        }, "The Ajax call timed out.", 5000);
-
-        
-        expect(validator.result).toHaveBeenCalledWith({status:"ok"});
+        console.log("result:"+helper.dbStatus.status);
+        expect(helper.dbStatus.status).toEqual("ok");
     });
 
+    afterEach(function(done) {
+      done();
+    });
 
-    // verify save
+});
+
+
+/*
+// verify save
     it('Should save object {name:"Joe"} and return {status:"ok"}',function(){
         expect(false);
     });
@@ -78,4 +80,6 @@ describe('modelBase',function(){
     it('Should update the entity after being created and updated',function(){
         expect(false);
     });
-});
+
+
+*/

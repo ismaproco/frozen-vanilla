@@ -4,9 +4,16 @@ documentElement = {};
 
 function ModelBase() {}
 
-ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbResponseCallback) {
+ModelBase.prototype.dbStatus = {status:"not connected"};
 
+ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbResponseCallback) {
     console.log("MONGO_URL " + conf.MONGO_URL);
+    
+    var $me = this;
+
+    this.entityName = _entityName;
+    this.documentElement = documentElement;
+
     if (mongoose.connection.readyState === 0)
     {
         db = mongoose.connect(conf.MONGO_URL);
@@ -14,14 +21,17 @@ ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbRe
 
     var db = mongoose.connection;
     
-    db.on('error', dbResponseCallback );
+    db.on('error', function(){ 
+    	$me.dbStatus = {status:"error"};
+    	dbResponseCallback({status:"error"});
+    });
 
     db.once('open',function(){
-        this.entityName = _entityName;
-        this.documentElement = documentElement;
-        this.model = db.model(this.entityName, this.documentElement,this.entityName);
-        return dbResponseCallback( {status:"ok"} );
-        console.log("ok");
+    	//Set of the database model
+        $me.model = this.model(_entityName, documentElement,_entityName);
+        $me.dbStatus = {status:"ok"};
+        //callback execution
+		dbResponseCallback({status:"ok"});        
     })
 };
 
