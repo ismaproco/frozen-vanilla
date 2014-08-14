@@ -63,47 +63,31 @@ ModelBase.prototype.save = function(obj) {
 
 ModelBase.prototype.get = function(obj) {
     //obj.params = {sort:{_id:-1},limit:1};
-    
-    console.log("getOne:Entity - " + this.entityName);
-    console.log("getOne:Model - " + typeof(this.model));
+
+    var result;
 
     this.model.find(obj.filter, null, obj.params, function(err, doc) {
+
         if (err) {
-            console.log("-> ERROR");
-            console.log("|| GET /->" + err);
             if (obj.hasOwnProperty("res")) {
                 obj.res.end();
             }
-            return err;
-        } else {
-
+            result = {error:err}
+        } 
+        else {
             if (obj.hasOwnProperty("res")) {
-                console.log("============ ||| Res -> " + obj.res);
-                console.log("============ ||| Call -> " + obj.callback);
-                if (obj.hasOwnProperty("callback")) {
-                    console.log("============ ||| Executing CALLBACK");
-                    obj.callback(doc);
-                } else {
-                    
-                    obj.res.write(JSON.stringify(doc));
-                    obj.res.end();
-                }
+                obj.res.write(JSON.stringify(doc));
+                obj.res.end();
+            } 
+			result = doc;
+        }
 
-            } else {
-                var ljson = JSON.stringify(doc);
-                console.log("element:-> " + ljson);
-
-                if (obj.hasOwnProperty("callback")) {
-                    console.log("============ ||| Executing CALLBACK");
-                    obj.callback(doc);
-                } else {
-                    return ljson;
-                }
-            }
-
+		if (obj.hasOwnProperty("callback")) {
+            obj.callback(result);
         }
     });
 
+    return result;
 };
 
 ModelBase.prototype.remove = function(obj) {
@@ -143,19 +127,32 @@ ModelBase.prototype.removeWithFilter = function(obj) {
     console.log("remove:Model - " + typeof(this.model));
     var entityName = this.entityName;
 
+    var result = {status: "no action"};
+
     this.model.remove(obj.filter, function(err) {
-        if (err) {
+        
+        if (err) 
+        {
             console.log("Error Removing " + entityName);
             if (obj.hasOwnProperty("res")) {
                 obj.res.end();
             }
-        } else {
+
+            result = {status:"error",message:err};
+        } 
+        else 
+        {
             if (obj.hasOwnProperty("res")) {
                 obj.res.end();
-                console.log("Remove ok");
-            } else {
-                console.log("Remove ok - no res");
             }
+
+            result = {status:"ok"};
+        }
+
+        //Execute the callback
+        if( obj.hasOwnProperty( "callback" ) )
+        {
+        	obj.callback( result );
         }
     });
 };
