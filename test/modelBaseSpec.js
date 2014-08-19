@@ -221,6 +221,74 @@ describe('modelBase get Carl',function(){
 });
 
 
+describe('modelBase remove Joe',function(){
+    
+    var obj = {
+        filter:{
+            name:"Joe",
+            age:"14"
+        },
+        params:{}
+    }
+
+
+    // Code to Execute before the async spec
+    beforeEach(function(done) {
+        obj.callback = function(result){
+            obj.result = result;
+            done();
+        };
+
+        helper.remove(obj);
+    });
+
+    // verify init 
+    it('Should return {status:ok}',
+        function() {
+            expect(obj.result.status).toEqual("ok");
+    });
+
+    // Code to Execute after the async spec
+    afterEach(function(done) {
+      done();
+    });
+
+});
+
+
+describe('modelBase get Joe',function(){
+    var obj = {
+        filter:{
+            name:"Joe",
+            age:"14"
+        },
+        params:{}
+    }
+
+
+    // Code to Execute before the async spec
+    beforeEach(function(done) {
+        obj.callback = function(result){
+            obj.result = result;
+            done();
+        };
+
+        helper.get(obj);
+    });
+
+    // verify init 
+    it('Should return 0 because Joe does not exists',
+        function() {
+            expect(obj.result.length).toEqual(0);
+    });
+
+    // Code to Execute after the async spec
+    afterEach(function(done) {
+      done();
+    });
+});
+
+
 /*
 
 
