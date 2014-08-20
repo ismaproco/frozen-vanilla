@@ -221,14 +221,47 @@ describe('modelBase get Carl',function(){
 });
 
 
-describe('modelBase remove Joe',function(){
-    
+var joeId = null;
+
+describe('modelBase get Joe Id',function(){
     var obj = {
         filter:{
             name:"Joe",
             age:"14"
         },
         params:{}
+    }
+
+
+    // Code to Execute before the async spec
+    beforeEach(function(done) {
+        obj.callback = function(result){
+            obj.result = result;
+            done();
+        };
+
+        helper.get(obj);
+    });
+
+    // verify init 
+    it('Should return 1 person object with the data {name:Joe,age:14}',
+        function() {
+            expect(obj.result.length).toEqual(1);
+            joeId = obj.result._id;
+    });
+
+    // Code to Execute after the async spec
+    afterEach(function(done) {
+      done();
+    });
+});
+
+
+
+describe('modelBase remove Joe',function(){
+    
+    var obj = {
+        id:joeId
     }
 
 
@@ -259,8 +292,7 @@ describe('modelBase remove Joe',function(){
 describe('modelBase get Joe',function(){
     var obj = {
         filter:{
-            name:"Joe",
-            age:"14"
+            _id:joeId
         },
         params:{}
     }
@@ -290,22 +322,6 @@ describe('modelBase get Joe',function(){
 
 
 /*
-
-
-
-
-
-    //verify multi get
-    it('Should return the list of elements schema ' 
-                            +'[{name:"Joe"},{name:"Mary"}]',function(){
-        expect(false);
-    });
-
-
-    //verify remove
-    it('Should remove the entity and return {status:"ok"}',function(){
-        expect(false);
-    });
 
     //verify remove with filter
     it('Should remove the entity and return {status:"ok"}',function(){
