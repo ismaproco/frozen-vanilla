@@ -96,6 +96,8 @@ ModelBase.prototype.remove = function(obj) {
     var entityName = this.entityName;
 
     this.model.findById(obj.id, function(err, control) {
+        var result = {status:"no action"};
+
         if (err) {
             console.log("Error Removing " + entityName);
 
@@ -103,10 +105,14 @@ ModelBase.prototype.remove = function(obj) {
                 obj.res.end();
             }
 
+            result.status = "error";
+
         } else {
 
             if (control !== null) {
                 control.remove();
+
+                result.status = "ok";
 
                 if (obj.hasOwnProperty("res")) {
                     obj.res.json(200, control);
@@ -115,9 +121,13 @@ ModelBase.prototype.remove = function(obj) {
                 } else {
                     console.log("Remove ok - no res");
                 }
+
+                if( obj.hasOwnProperty( "callback" ) )
+                {
+                    obj.callback( result );
+                }
             }
         }
-
     });
 };
 

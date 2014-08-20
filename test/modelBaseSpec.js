@@ -289,7 +289,7 @@ describe('modelBase remove Joe',function(){
 });
 
 
-describe('modelBase get Joe',function(){
+describe('modelBase get Joe after Remove',function(){
     var obj = {
         filter:{
             _id:joeId
