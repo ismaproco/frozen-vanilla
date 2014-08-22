@@ -35,6 +35,12 @@ ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbRe
     })
 };
 
+ModelBase.prototype.close = function()
+{
+    this.connection.close();
+}
+
+
 ModelBase.prototype.save = function(obj) {
     var entityName = this.entityName;
 
@@ -95,8 +101,9 @@ ModelBase.prototype.remove = function(obj) {
     console.log("remove:Model - " + typeof(this.model));
     var entityName = this.entityName;
 
+    var result = {status:"no action"};
+
     this.model.findById(obj.id, function(err, control) {
-        var result = {status:"no action"};
 
         if (err) {
             console.log("Error Removing " + entityName);
@@ -107,9 +114,12 @@ ModelBase.prototype.remove = function(obj) {
 
             result.status = "error";
 
-        } else {
+        } 
+        else 
+        {
+            if (control !== null) 
+            {
 
-            if (control !== null) {
                 control.remove();
 
                 result.status = "ok";
@@ -121,12 +131,13 @@ ModelBase.prototype.remove = function(obj) {
                 } else {
                     console.log("Remove ok - no res");
                 }
-
-                if( obj.hasOwnProperty( "callback" ) )
-                {
-                    obj.callback( result );
-                }
             }
+
+            if( obj.hasOwnProperty( "callback" ) )
+            {
+                obj.callback( result );
+            }
+
         }
     });
 };
@@ -202,9 +213,7 @@ ModelBase.prototype.count = function(obj) {
                     return ljson;
                 }
             }        
-        });
-    
-    
+        }); 
 };
 
 

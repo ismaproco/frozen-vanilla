@@ -247,7 +247,7 @@ describe('modelBase get Joe Id',function(){
     it('Should return 1 person object with the data {name:Joe,age:14}',
         function() {
             expect(obj.result.length).toEqual(1);
-            joeId = obj.result._id;
+            joeId = obj.result[0]._id;
     });
 
     // Code to Execute after the async spec
@@ -260,13 +260,11 @@ describe('modelBase get Joe Id',function(){
 
 describe('modelBase remove Joe',function(){
     
-    var obj = {
-        id:joeId
-    }
-
+    var obj = {};
 
     // Code to Execute before the async spec
     beforeEach(function(done) {
+        obj.id = joeId;
         obj.callback = function(result){
             obj.result = result;
             done();
@@ -319,6 +317,10 @@ describe('modelBase get Joe after Remove',function(){
       done();
     });
 });
+
+
+mongoose.connection.close();
+
 
 
 /*
