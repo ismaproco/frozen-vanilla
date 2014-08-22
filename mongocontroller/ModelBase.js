@@ -97,8 +97,6 @@ ModelBase.prototype.get = function(obj) {
 };
 
 ModelBase.prototype.remove = function(obj) {
-    console.log("remove:Entity - " + this.entityName);
-    console.log("remove:Model - " + typeof(this.model));
     var entityName = this.entityName;
 
     var result = {status:"no action"};
@@ -106,14 +104,11 @@ ModelBase.prototype.remove = function(obj) {
     this.model.findById(obj.id, function(err, control) {
 
         if (err) {
-            console.log("Error Removing " + entityName);
-
             if (obj.hasOwnProperty("res")) {
                 obj.res.end();
             }
 
-            result.status = "error";
-
+            result.status = "error: " + error;
         } 
         else 
         {
@@ -127,9 +122,6 @@ ModelBase.prototype.remove = function(obj) {
                 if (obj.hasOwnProperty("res")) {
                     obj.res.json(200, control);
                     obj.res.end();
-                    console.log("Remove ok");
-                } else {
-                    console.log("Remove ok - no res");
                 }
             }
 
@@ -144,17 +136,13 @@ ModelBase.prototype.remove = function(obj) {
 
 
 ModelBase.prototype.removeWithFilter = function(obj) {
-    console.log("remove:Entity - " + this.entityName);
-    console.log("remove:Model - " + typeof(this.model));
-    var entityName = this.entityName;
-
+    
     var result = {status: "no action"};
 
     this.model.remove(obj.filter, function(err) {
         
         if (err) 
         {
-            console.log("Error Removing " + entityName);
             if (obj.hasOwnProperty("res")) {
                 obj.res.end();
             }
@@ -228,28 +216,37 @@ var getKeys = function(obj){
 
 
 ModelBase.prototype.update = function(obj) {
-    this.model.update(obj.filter, obj.operation, {
-        multi: true
-    }, function(err, numberAffected, raw) {
-        if (err) return handleError(err);
-        console.log('++++++>The number of updated documents was %d', numberAffected);
-        console.log('++++++>The raw response from Mongo was ', raw);
 
-        if (obj.hasOwnProperty("res")) {
-            obj.res.end();
+    var result = {status:"no action"};
+
+    this.model.update( obj.filter, obj.operation, { multi: true }, 
+        function(err, numberAffected, raw) {
+        
+        if (err)
+        {
+            if (obj.hasOwnProperty("res")) 
+            {
+                obj.res.end();
+            }
+
+            result.status = "error: " + error;
+        }
+        else
+        {
+            if (obj.hasOwnProperty("res")) {
+                obj.res.end();
+            }
+
+            result.status = "ok";
+            result.numberAffected = numberAffected;
         }
 
+        if( obj.hasOwnProperty( "callback" ) )
+        {
+            obj.callback(result);
+        }
 
     });
-
-    if (obj.hasOwnProperty("res")) {
-        obj.res.end();
-        console.log("Update ok");
-    } else {
-        console.log("Update ok - no res");
-    }
-
-    return "";
 };
 
 ModelBase.prototype.custom = function(obj) {

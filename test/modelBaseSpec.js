@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 function PersonHelper(){
     this.documentDefinition = new mongoose.Schema({
         name:String,
-        age: Number              
+        age: String              
     });
 };
 
@@ -258,6 +258,77 @@ describe('modelBase get Joe Id',function(){
 
 
 
+//Update
+describe('modelBase update Joe, for Kim ',function(){
+    var obj = {
+        filter:{},
+        params:{},
+        operation:{name:'Kim',age:'55'}
+    }
+
+    // Code to Execute before the async spec
+    beforeEach(function(done) {
+        
+        obj.filter = {
+            _id:joeId
+        };
+
+        obj.callback = function(result){
+            this.result = result;
+            done();
+        };
+
+        helper.update(obj);
+    });
+
+    // verify init 
+    it('Should return {status:"ok"}',
+        function() {
+            expect(obj.result.status).toEqual("ok");
+    });
+
+    // Code to Execute after the async spec
+    afterEach(function(done) {
+      done();
+    });
+});
+
+
+describe('modelBase get Kim after being updated from Joe',function(){
+    var obj = {
+        filter:{},
+        params:{}
+    }
+
+    // Code to Execute before the async spec
+    beforeEach(function(done) {
+        obj.filter = {
+            _id:joeId
+        };
+        obj.callback = function(result){
+            obj.result = result;
+            done();
+        };
+
+        helper.get(obj);
+    });
+
+    // verify init 
+    it('Should return {name:"Kim",age:"55"}',
+        function() {
+
+            expect(obj.result[0].name).toEqual("Kim");
+            expect(obj.result[0].age).toEqual("55");
+    });
+
+    // Code to Execute after the async spec
+    afterEach(function(done) {
+      done();
+    });
+});
+
+
+
 describe('modelBase remove Joe',function(){
     
     var obj = {};
@@ -319,31 +390,17 @@ describe('modelBase get Joe after Remove',function(){
 });
 
 
-mongoose.connection.close();
+
+
+
+
+
 
 
 
 /*
-
-    //verify remove with filter
-    it('Should remove the entity and return {status:"ok"}',function(){
-        expect(false);
-    });
-
-    //verify count 0
-    it('should return 0 after removing all db objects',function(){
-        expect(false);
-    });
-
-    //verify count more than 0  
-    it('should return 5 after creating 5 entities',function(){
-        expect(false);
-    });
-
     //verify update
     it('Should update the entity after being created and updated',function(){
         expect(false);
     });
-
-
 */
