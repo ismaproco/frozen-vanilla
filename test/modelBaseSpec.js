@@ -24,7 +24,8 @@ describe('modelBase init',function(){
             done();
             return obj;
         };
-        helper.init(mongoose,"person", helper.documentDefinition, resultCallback );      
+        helper.init(mongoose,"person", helper.documentDefinition,
+                                                         resultCallback );
     });
 
     // verify init 
@@ -389,18 +390,30 @@ describe('modelBase get Joe after Remove',function(){
     });
 });
 
+describe('disconnect from the db',function(){
+    var obj = {
+        
+    }
 
-
-
-
-
-
-
-
-
-/*
-    //verify update
-    it('Should update the entity after being created and updated',function(){
-        expect(false);
+    // Code to Execute before the async spec
+    beforeEach(function(done) {
+        obj.callback = function()
+        {
+            done();
+        }
+        mongoose.disconnect(obj.callback);
     });
-*/
+
+    // verify init 
+    it('Should return 1 closed connections',
+        function() {
+            expect(mongoose.connection.base.connections.length).toEqual(1);
+    });
+
+    // Code to Execute after the async spec
+    afterEach(function(done) {
+      done();
+    });
+});
+
+// ****************************************************************************
