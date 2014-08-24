@@ -6,7 +6,8 @@ function ModelBase() {}
 
 ModelBase.prototype.dbStatus = {status:"not connected"};
 
-ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbResponseCallback) {
+ModelBase.prototype.init = 
+            function(mongoose, _entityName, documentElement, callback) {
     console.log("MONGO_URL " + conf.MONGO_URL);
     
     var $me = this;
@@ -23,7 +24,7 @@ ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbRe
     
     db.on('error', function(){ 
     	$me.dbStatus = {status:"error"};
-    	dbResponseCallback({status:"error"});
+    	callback({status:"error"});
     });
 
     db.once('open',function(){
@@ -31,19 +32,11 @@ ModelBase.prototype.init = function(mongoose, _entityName, documentElement, dbRe
         $me.model = this.model(_entityName, documentElement,_entityName);
         $me.dbStatus = {status:"ok"};
         //callback execution
-		dbResponseCallback({status:"ok"});        
+		callback({status:"ok"});        
     })
 };
 
-ModelBase.prototype.close = function()
-{
-    this.connection.close();
-}
-
-
 ModelBase.prototype.save = function(obj) {
-    var entityName = this.entityName;
-
     //create new model
     var p = new this.model(obj);
 
@@ -68,8 +61,6 @@ ModelBase.prototype.save = function(obj) {
 };
 
 ModelBase.prototype.get = function(obj) {
-    //obj.params = {sort:{_id:-1},limit:1};
-
     var result;
 
     this.model.find(obj.filter, null, obj.params, function(err, doc) {
@@ -97,14 +88,15 @@ ModelBase.prototype.get = function(obj) {
 };
 
 ModelBase.prototype.remove = function(obj) {
-    var entityName = this.entityName;
-
+    
     var result = {status:"no action"};
 
     this.model.findById(obj.id, function(err, control) {
 
-        if (err) {
-            if (obj.hasOwnProperty("res")) {
+        if (err) 
+        {
+            if (obj.hasOwnProperty("res")) 
+            {
                 obj.res.end();
             }
 
@@ -114,12 +106,12 @@ ModelBase.prototype.remove = function(obj) {
         {
             if (control !== null) 
             {
-
                 control.remove();
 
                 result.status = "ok";
 
-                if (obj.hasOwnProperty("res")) {
+                if (obj.hasOwnProperty("res")) 
+                {
                     obj.res.json(200, control);
                     obj.res.end();
                 }
@@ -167,37 +159,31 @@ ModelBase.prototype.removeWithFilter = function(obj) {
 };
 
 ModelBase.prototype.count = function(obj) {
-    console.log("count:Entity - " + this.entityName);
-    console.log("count:Model - " + typeof(this.model));
-    var entityName = this.entityName;
 
-    var numberOfDocuments = this.model.count({},
+    this.model.count({},
         function(err,count){
-            if (obj.hasOwnProperty("res") && !err) {
-                console.log("============ ||| Res -> " + obj.res);
-                console.log("============ ||| Call -> " + obj.callback);
-                if (obj.hasOwnProperty("callback")) {
-                    console.log("============ ||| Executing CALLBACK");
+            if (obj.hasOwnProperty("res") && !err) 
+            {
+                if (obj.hasOwnProperty("callback")) 
+                {
                     obj.callback(count);
-                } else {
-                    
-                    console.log("============ ||| numberOfDocuments -> " + count);
+                } 
+                else 
+                {
                     obj.res.write( JSON.stringify( count ) );
                     obj.res.end();
                 }
-
-            } else {
-                
+            } 
+            else
+            {
                 var ljson = JSON.stringify( count ) ;
 
-                console.log("element:-> " + ljson);
-
-                if (obj.hasOwnProperty("callback")) {
-
-                    console.log("============ ||| Executing CALLBACK");
-
+                if (obj.hasOwnProperty("callback")) 
+                {
                     obj.callback( JSON.stringify( ljson ) );
-                } else {
+                }
+                else
+                {
                     return ljson;
                 }
             }        
@@ -252,7 +238,12 @@ ModelBase.prototype.update = function(obj) {
 ModelBase.prototype.custom = function(obj) {
     console.log("obj.name -> " + obj.name);
     
-    this.model.find({}, function(err, data) { console.log(err, data, data.length); });
+    this.model.find({}, function(err, data) { 
+                            console.log(err, data, data.length); 
+                        });
 };
 
 module.exports = ModelBase;
+
+
+// ****************************************************************************

@@ -405,7 +405,7 @@ describe('disconnect from the db',function(){
     });
 
     // verify init 
-    it('Should return 1 closed connections',
+    it('Should return 1 closed connection',
         function() {
             expect(mongoose.connection.base.connections.length).toEqual(1);
     });
