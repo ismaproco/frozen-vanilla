@@ -1,3 +1,5 @@
+'use strict';
+
 //Model Facade
 //Module in charge of the instantiation of the model classes
 var mongoose = require('mongoose');

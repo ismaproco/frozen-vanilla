@@ -1,6 +1,8 @@
+'use strict';
+
 var conf = require('../conf');
-mongoose = {};
-documentElement = {};
+var mongoose = {};
+var documentElement = {};
 
 function ModelBase() {}
 

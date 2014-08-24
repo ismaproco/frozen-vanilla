@@ -1,3 +1,4 @@
+'use strict';
 var modelBase = require("./ModelBase");
 
 //Inhiterance of the ModelBase class
