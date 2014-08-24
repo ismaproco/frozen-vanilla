@@ -1,3 +1,16 @@
+08/24/2014
+============
+- Completed test cases for the mongo controller
+- Improved code structure and format of ModelBase
+
+ToDo
+- Implement facebook login
+- More html changes
+- Move Intagram loader from the html to the backend
+
+*iSmA :)
+
+
 08/10/2014
 ============
 - The dependencies were cleared
